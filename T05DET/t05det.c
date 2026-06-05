@@ -8,9 +8,9 @@ typedef void VOID;
 
 #define TRUE 1
 #define FALSE 0
-#define MAX 3
+#define MAX 10 
 
-DBL A[MAX][MAX], prod = 1, Det = 0;
+DBL A[MAX][MAX],  Det = 0;
 INT N, P[MAX];
 BOOL IsParity = TRUE;
 
@@ -39,50 +39,54 @@ BOOL LoadMatrix( CHAR *FileName )
   return TRUE;
 }
 
-VOID Swap( INT *a, INT *b )
+VOID Swap( INT *A, INT *B )
 {
-  INT c;
+  INT tmp;
 
-  c = *a;
-  *a = *b;
-  *b = c;
+  tmp = *A;
+  *A = *B;
+  *B = tmp;
 }
 
-DBL f( INT n )
+VOID f( INT Pos )
 {
   INT i;
+  DBL prod;
 
-  if (n == MAX)
+  if (Pos >= N)
   {
-    for (prod = 1, i = 0; i < N; i++)
+    for (prod = 1.0, i = 0; i < N; i++)
       prod *= A[i][P[i]];
     Det += prod * (IsParity ? 1 : -1);
   }
-
-  for (i = n; i < MAX; i++)
-    {
-      Swap(&P[n], &P[i]);
-      if (n != i)
-        IsParity = !IsParity;
-
-      f(n + 1);
-      Swap(&P[n], &P[i]);
-      IsParity = !IsParity;
+  else
+  {
+    for (i = Pos; i < N; i++)
+      {
+        Swap(&P[Pos], &P[i]);
+        if (Pos != i)
+          IsParity = !IsParity;
+        f(Pos + 1);
+        if (Pos != i)
+          IsParity = !IsParity; 
+        Swap(&P[Pos], &P[i]);
     }
-
-  return Det;
+  }
 }
 
 VOID main( VOID )
 {
   INT i;
-  DBL Det;
 
-  for (i = 0; i < MAX; i++)
-    P[i] = i;
-
-  LoadMatrix("b.txt");
-  Det = f(0);
-  printf("%f", Det);
+  if (LoadMatrix("b.txt"))
+  {
+    for (i = 0; i < N; i++)
+      P[i] = i;
+    LoadMatrix("b.txt");
+    f(0);
+    printf("Determinator is %f\n", Det);
+  }
+  else
+    printf("Matrix is not loaded\n");
   getchar();
 }

@@ -1,18 +1,18 @@
 #include <stdio.h>
 
-#define MAX 3
+#define MAX 4 
 static int IsParity = 1;
 
-void Swap( int *a, int *b )
+void Swap( int *A, int *B )
 {
-  int c;
+  int tmp;
 
-  c = *a;
-  *a = *b;
-  *b = c;
+  tmp = *A;
+  *A = *B;
+  *B = tmp;
 }
 
-void Store( int Size, int *a )
+void Store( int Size, int *A )
 {
   FILE *F;
   int i;
@@ -21,30 +21,30 @@ void Store( int Size, int *a )
     return;
   
   for (i = 0; i < Size; i++)
-    fprintf(F, "%i", a[i]);
+    fprintf(F, "%i", A[i]);
 
   fprintf(F, ", Parity: %s \n", IsParity ? "even" : "odd");
   fclose(F);
 }
 
-void f( int n,  int Size, int *a )
+void f( int N, int Size, int *A )
 {
-  int i, SaveParity;
+  int i;
 
-  if (n >= Size)
+  if (N >= Size)
   {
-    Store(Size, a);
+    Store(Size, A);
     return;
   }
 
-  for (i = n; i < Size; i++)
+  for (i = N; i < Size; i++)
   {
-    Swap(&a[n], &a[i]);
-    if (n != i)
+    Swap(&A[N], &A[i]);
+    if (N != i)
       IsParity = !IsParity;
 
-    f(n + 1, Size, a);
-    Swap(&a[n], &a[i]);
+    f(N + 1, Size, A);
+    Swap(&A[N], &A[i]);
   }
 }
 
