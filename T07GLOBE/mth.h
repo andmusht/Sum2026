@@ -34,6 +34,7 @@
 
 #define MatrMulMatr3(A, B, C) MatrMulMatr(MatrMulMatr(A, B), C)
 #define MatrMulMatr4(A, B, C, D) MatrMulMatr((MatrMulMatr3(A, B, C), D)
+#define MatrMulMatr5(A, B, C, D, E) MatrMulMatr((MatrMulMatr4(A, B, C, D), E)
 
 /* Base float point types */
 typedef double DBL;
@@ -350,15 +351,15 @@ __inline MATR MatrRotate( DBL AngleInDegrees, VEC R )
   MATR M =
   {
     {
-      {co + V.X * V.X * (1 - co),
-         V.X * V.Y * (1 - co) + V.Z * si,
-           V.X * V.Z * (1 - co) - V.Y * si, 0},
+      {co + V.X * V.X * (1 - co), 
+        V.X * V.Y * (1 - co) + V.Z * si, 
+        V.X * V.Z * (1 - co) - V.Y * si, 0},
       {V.Y * V.X * (1 - co) - V.Z * si,
          co + V.Y * V.Y * (1 - co),
-           V.Y * V.Z * (1 - co) + V.X * si, 0},
+         V.Y * V.Z * (1 - co) + V.X * si, 0},
       {V.Z * V.X * (1 - co) + V.Y * si,
          V.Z * V.Y * (1 - co) - V.X * si,
-           co + V.Z * V.Z * (1 - co), 0},
+         co + V.Z * V.Z * (1 - co), 0},
       {0, 0, 0, 1}
     }
   };

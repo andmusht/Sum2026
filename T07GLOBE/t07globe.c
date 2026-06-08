@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 
 #include "globe.h"
 
@@ -66,14 +67,20 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInctance,
   /* Create Windows */
   hWnd = CreateWindow(WND_CLASS_NAME, "Globe", WS_OVERLAPPEDWINDOW | WS_VISIBLE | WS_CLIPCHILDREN,
     CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, hInstance, NULL);
-  CreateWindow("BUTTON", "Close", WS_CHILD | WS_VISIBLE,
-    0, 0, 120, 60, hWnd, (HMENU)31, hInstance, NULL);
+  /*CreateWindow("BUTTON", "Close", WS_CHILD | WS_VISIBLE,
+    0, 0, 120, 60, hWnd, (HMENU)31, hInstance, NULL);*/
 
   /* Main Program Loop */
-  while (GetMessage(&msg, NULL, 0, 0))
+  while (TRUE)
   {
-    TranslateMessage(&msg);
-    DispatchMessage(&msg);
+    if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+    {
+      if (msg.message == WM_QUIT)
+        break;
+      TranslateMessage(&msg);
+      DispatchMessage(&msg);
+    }
+    SendMessage(hWnd, WM_TIMER, 30, 0);
   }
 
   return 0;
@@ -87,7 +94,9 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
   POINT p;
   CHAR Buf[100];
   SYSTEMTIME time;
-  static INT W, H, is_flag = 0;
+  INT t;
+  static INT W, H, is_flag = 0, StartTime, FrameCount;
+  static DBL FPS = 30.0;
   static HDC hMemDC;
   static BITMAP bm;
   static HBITMAP hBm;
@@ -134,21 +143,36 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
   case WM_CREATE:
     hDc = GetDC(hWnd);
     hMemDC = CreateCompatibleDC(hDc);
-    GLB_Init(0.3);
+    GLB_Init(1);
+    StartTime = clock();
+    FrameCount = 0;
     ReleaseDC(hWnd, hDc);
-    SetTimer(hWnd, 3, 8, NULL);
+    SetTimer(hWnd, 3, 1, NULL);
     break;
 
   case WM_TIMER:
+    FrameCount++;
+    t = clock;
+    if (t - StartTime > (INT)CLOCKS_PER_SEC)
+    {
+      FPS = FrameCount / ((t - StartTime) / (DBL)CLOCKS_PER_SEC);
+      FrameCount = 0;
+      StartTime = t;
+    }
     SelectObject(hMemDC, hBm);
 
     SelectObject(hMemDC, GetStockObject(DC_BRUSH));
-    SelectObject(hMemDC, GetStockObject(DC_PEN));
+    SelectObject(hMemDC, GetStockObject(NULL_PEN));
+
+    SetDCBrushColor(hMemDC, RGB(0, 0, 0));
+    Rectangle(hMemDC, 0, 0, W, H);
 
     GetLocalTime(&time);
-    TextOut(hMemDC, W / 7, H / 7, Buf, wsprintf(Buf, "%02d:%02d:%02d", time.wHour, time.wMinute, time.wSecond));
+    TextOut(hMemDC, W / 7, H / 7, Buf, sprintf(Buf, "%02d:%02d:%02d FPS:%f", time.wHour, time.wMinute, time.wSecond, FPS));
 
-   GetCursorPos(&p);
+    GLB_Draw(hMemDC);
+
+    GetCursorPos(&p);
     ScreenToClient(hWnd, &p);
     Ellipse(hMemDC, p.x - 7, p.y - 7, p.x + 7, p.y + 7);
 
