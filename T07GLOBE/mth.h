@@ -9,7 +9,7 @@
 
 #include <math.h>
 
-#include <windiws.h>
+#include <windows.h>
 
 /* Pi math constant */
 #define PI 3.14159265358979323846
@@ -103,7 +103,7 @@ __inline VEC VecSubVec( VEC V1, VEC V2 )
   return VecSet(V1.X - V2.X, V1.Y - V2.Y, V1.Z - V2.Z);
 } /* End of 'VecSubVec' function */
 
-/* Muktiply vector by number function.
+/* Multiply vector by number function.
  * ARGUMENTS:
  *   - vector to be multiply:
  *       VEC V1;
@@ -239,8 +239,8 @@ __inline VEC VectorTransform( VEC V, MATR M )
  */
 __inline MATR MatrIdentity( VOID )
 {
-  MATR I = UnitMatrix;
-  return I;
+  MATR i = UnitMatrix;
+  return i;
 } /* End of 'MatrIdentity' function */
 
 /* Set matrix function.
@@ -433,9 +433,9 @@ __inline MATR MatrRotateZ( DBL AngleInDegrees )
 __inline MATR MatrTranspose( MATR M )
 {
   return MatrSet(M.A[0][0], M.A[1][0], M.A[2][0], M.A[3][0],
-          M.A[0][1], M.A[1][1], M.A[2][1], M.A[3][1],
-          M.A[0][2], M.A[1][2], M.A[2][2], M.A[3][2],
-          M.A[0][3], M.A[1][3], M.A[2][3], M.A[3][3]);
+                 M.A[0][1], M.A[1][1], M.A[2][1], M.A[3][1],
+                 M.A[0][2], M.A[1][2], M.A[2][2], M.A[3][2],
+                 M.A[0][3], M.A[1][3], M.A[2][3], M.A[3][3]);
 } /* End of 'MatrTranspose' function */
 
 /* 3x3 matrix determinator find function.
@@ -446,8 +446,8 @@ __inline MATR MatrTranspose( MATR M )
  *   (DBL) determinator.
  */
 __inline DBL MatrDeterm3x3( DBL A11, DBL A12, DBL A13,
-                   DBL A21, DBL A22, DBL A23,
-                   DBL A31, DBL A32, DBL A33 )
+                            DBL A21, DBL A22, DBL A23,
+                            DBL A31, DBL A32, DBL A33 )
 {
   return A11 * A22 * A33 + A12 * A23 * A31 + A13 * A21 * A32 -
          A11 * A23 * A32 - A12 * A21 * A33 - A13 * A22 * A31;

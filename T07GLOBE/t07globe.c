@@ -1,9 +1,41 @@
+#include <stdio.h>
+
 #include "globe.h"
 
 #define WND_CLASS_NAME "tung tung tung sahuhr"
 
 LRESULT CALLBACK MyWindowFunc( HWND hwnd, UINT Msg, 
                                WPARAM wparam,LPARAM lparam );
+
+void PrintMatrix( MATR M )
+{
+  int i, j;
+
+  for (i = 0; i < 4; i++)
+    for (j = 0; i < 4; j++)
+      printf("%d%c", M.A[i][j], i != 4 ? " " : "\n");
+}
+
+void main( void )
+{
+  MATR m =
+  {
+    {
+      {1, 0, 0, 0},
+      {0, 1, 0, 0},
+      {0, 0, 1, 0},
+      {0, 0, 0, 1}
+    }
+  }, m1, m2;
+
+  m1 = MatrInverse(m);
+  m2 = MatrMulMatr(m, m1);
+  PrintMatrix(m2);
+  m2 = MatrMulMatr(m1, m);
+
+  /*m = MatrRotate(90, VecSet(0, 1, 0));*/
+  m1 = MatrInverse(m);
+}
 
 INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInctance,
                    CHAR *CmdLine, INT ShowCmd )
@@ -12,6 +44,7 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInctance,
   MSG msg;
   HWND hWnd;
 
+  
   /* Windows Class Register */
   wc.style = CS_VREDRAW | CS_HREDRAW;
   wc.cbClsExtra = 0;
@@ -42,6 +75,7 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInctance,
     TranslateMessage(&msg);
     DispatchMessage(&msg);
   }
+
   return 0;
 }
 
@@ -101,14 +135,12 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
     hDc = GetDC(hWnd);
     hMemDC = CreateCompatibleDC(hDc);
     GLB_Init(0.3);
-    GetObject(hBmClockface, sizeof(BITMAP), &bm);
     ReleaseDC(hWnd, hDc);
     SetTimer(hWnd, 3, 8, NULL);
     break;
 
   case WM_TIMER:
     SelectObject(hMemDC, hBm);
-    SelectObject(hDCClockface, hBmClockface);
 
     SelectObject(hMemDC, GetStockObject(DC_BRUSH));
     SelectObject(hMemDC, GetStockObject(DC_PEN));

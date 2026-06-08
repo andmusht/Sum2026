@@ -1,17 +1,9 @@
-#include <math.h>
 #include <time.h>
 
 #include "globe.h"
 
-#define PI 3.14159269793  /* Pi */
-
 #define GRID_H 19
 #define GRID_W 17
-
-typedef struct tagVEC     /* Vector structure for coordinates */
-{
-  DBL X, Y, Z;
-} VEC;
 
 static VEC GLB_Globe[GRID_H][GRID_W];                   /* Globe points array */
 static INT GLB_RndFrameW, GLB_RndFrameH;                /* Frame widght and height */
@@ -142,7 +134,7 @@ VOID GLB_Resize( INT Ws, INT Hs )
  */
 VOID GLB_Draw( HDC hDC )
 {
-  static POINT pnts[GRID_H][GRID_W];
+/*  static POINT pnts[GRID_H][GRID_W];
   POINT ps[4];
   INT i, j, s = 5;
   DBL t, xp, yp;
@@ -183,7 +175,7 @@ VOID GLB_Draw( HDC hDC )
     MoveToEx(hDC, pnts[0][j].x, pnts[0][j].y, NULL);
     for (i = 1; i < GRID_H; i++)
       LineTo(hDC, pnts[i][j].x, pnts[i][j].y);
-  }
+  }*/
   /*for (i = 0; i < GRID_H - 1; i++)
     for (j = 0; j < GRID_W - 1; j++)
     {

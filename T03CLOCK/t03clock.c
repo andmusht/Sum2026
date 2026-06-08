@@ -73,7 +73,6 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInctance,
 LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
                                WPARAM wParam, LPARAM lParam )
 {
-  HPEN hPen, hOldpen;
   HDC hDc;
   PAINTSTRUCT pt;
   POINT p;
