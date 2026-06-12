@@ -37,29 +37,29 @@
 #define MatrMulMatr5(A, B, C, D, E) MatrMulMatr((MatrMulMatr4(A, B, C, D), E)
 
 /* Base float point types */
-typedef double DBL;
-typedef float FLT;
+typedef DOUBLE DBL;
+typedef FLOAT FLT;
 
 /* Space vector/point representation type */
 typedef struct tagVEC
 {
-  DBL X, Y, Z; /* Vector coordinates */
+  FLT X, Y, Z; /* Vector coordinates */
 } VEC;
 
 /* Transformation matrix representation type */
 typedef struct tagMATR
 {
-  DBL A[4][4]; /* Matrix elements */
+  FLT A[4][4]; /* Matrix elements */
 } MATR;
 
 /* Vectors set function.
  * ARGUMENTS:
  *   - coordinates of the vector:
- *       DBL X, Y, Z;
+ *       FLT X, Y, Z;
  * RETURNS:
  *   (VEC) result vector.
  */
-__inline VEC VecSet( DBL X, DBL Y, DBL Z )
+__inline VEC VecSet( FLT X, FLT Y, FLT Z )
 {
   VEC v = {X, Y, Z};
 
@@ -69,11 +69,11 @@ __inline VEC VecSet( DBL X, DBL Y, DBL Z )
 /* Vectors set with one variable function.
  * ARGUMENTS:
  *   - coordinates of the vector:
- *       DBL A;
+ *       FLT A;
  * RETURNS:
  *   (VEC) result vector.
  */
-__inline VEC VecSet1( DBL A )
+__inline VEC VecSet1( FLT A )
 {
   VEC v = {A, A, A};
 
@@ -109,11 +109,11 @@ __inline VEC VecSubVec( VEC V1, VEC V2 )
  *   - vector to be multiply:
  *       VEC V1;
  *   - number multiply:
- *       DBL N;
+ *       FLT N;
  * RETURNS:
  *   (VEC) result vector.
  */
-__inline VEC VecMulNum( VEC V, DBL N )
+__inline VEC VecMulNum( VEC V, FLT N )
 {
   return VecSet(V.X * N, V.Y * N, V.Z * N);
 } /* End of 'VecMulNum' function */
@@ -123,11 +123,11 @@ __inline VEC VecMulNum( VEC V, DBL N )
  *   - vector to be divide:
  *       VEC V1;
  *   - number divide:
- *       DBL N;
+ *       FLT N;
  * RETURNS:
  *   (VEC) result vector.
  */
-__inline VEC VecDivNum( VEC V, DBL N )
+__inline VEC VecDivNum( VEC V, FLT N )
 {
   return VecSet(V.X / N, V.Y / N, V.Z / N);
 } /* End of 'VecDivNum' function */
@@ -149,9 +149,9 @@ __inline VEC VecNeg( VEC V )
  *   - vectors to be multyply:
  *       VEC V;
  * RETURNS:
- *   (DBL) result.
+ *   (FLT) result.
  */
-__inline DBL VecDotVec( VEC V1, VEC V2 )
+__inline FLT VecDotVec( VEC V1, VEC V2 )
 {
   return V1.X * V2.X + V1.Y * V2.Y + V2.Z * V1.Z;
 } /* End of 'VecDotVec' function */
@@ -161,11 +161,11 @@ __inline DBL VecDotVec( VEC V1, VEC V2 )
  *   - vectors whichs lenght to be found:
  *       VEC V;
  * RETURNS:
- *   (DBL) result.
+ *   (FLT) result.
  */
-__inline DBL VecLen( VEC V )
+__inline FLT VecLen( VEC V )
 {
-  DBL len = VecDotVec(V, V);
+  FLT len = VecDotVec(V, V);
 
   if (len == 1 || len == 0)
     return len;
@@ -177,11 +177,11 @@ __inline DBL VecLen( VEC V )
  *   - vectors whichs lenght to be found:
  *       VEC V;
  * RETURNS:
- *   (DBL) result.
+ *   (FLT) result.
  */
-__inline DBL VecLen2( VEC V )
+__inline FLT VecLen2( VEC V )
 {
-  DBL len = VecDotVec(V, V);
+  FLT len = VecDotVec(V, V);
 
   return len;
 } /* End of 'VecLen2' function */
@@ -191,11 +191,11 @@ __inline DBL VecLen2( VEC V )
  *   - vectors to be normalized:
  *       VEC V;
  * RETURNS:
- *   (DBL) result.
+ *   (FLT) result.
  */
 __inline VEC VecNormalize( VEC V )
 {
-  DBL len = VecDotVec(V, V);
+  FLT len = VecDotVec(V, V);
 
   if (len == 1 || len == 0)
     return V;
@@ -247,14 +247,14 @@ __inline MATR MatrIdentity( VOID )
 /* Set matrix function.
  * ARGUMENTS:
  *   - varibles to be set:
- *       DBL from A00 to A33;
+ *       FLT from A00 to A33;
  * RETURNS:
  *   (MATR) matrix we set.
  */
-__inline MATR MatrSet( DBL A00, DBL A01, DBL A02, DBL A03,
-                       DBL A10, DBL A11, DBL A12, DBL A13,
-                       DBL A20, DBL A21, DBL A22, DBL A23,
-                       DBL A30, DBL A31, DBL A32, DBL A33 )
+__inline MATR MatrSet( FLT A00, FLT A01, FLT A02, FLT A03,
+                       FLT A10, FLT A11, FLT A12, FLT A13,
+                       FLT A20, FLT A21, FLT A22, FLT A23,
+                       FLT A30, FLT A31, FLT A32, FLT A33 )
 {
   MATR m =
   {
@@ -318,7 +318,7 @@ __inline MATR MatrMulMatr( MATR M1, MATR M2 )
  */
 __inline VEC VecMulMatr( VEC V, MATR M )
 {
-  DBL w = V.X * M.A[0][3] + V.Y * M.A[1][3] + V.Z * M.A[2][3] + M.A[3][3];
+  FLT w = V.X * M.A[0][3] + V.Y * M.A[1][3] + V.Z * M.A[2][3] + M.A[3][3];
 
   return VecSet((V.X * M.A[0][0] + V.Y * M.A[1][0] + V.Z * M.A[2][0] + M.A[3][0]) / w,
                 (V.X * M.A[0][1] + V.Y * M.A[1][1] + V.Z * M.A[2][1] + M.A[3][1]) / w,
@@ -338,13 +338,13 @@ __inline MATR MatrScale( VEC S )
  *   - vector to be rotated:
  *       VEC V;
  *   - angle in degree to rotate:
- *       DBL AngleInDegree;
+ *       FLT AngleInDegree;
  * RETURNS:
  *   (MATR) result matrix.
  */
-__inline MATR MatrRotate( DBL AngleInDegrees, VEC R )
+__inline MATR MatrRotate( FLT AngleInDegrees, VEC R )
 {
-  DBL 
+  FLT 
     a = D2R(AngleInDegrees),
     si = sin(a), co = cos(a);
   VEC V = VecNormalize(R);
@@ -370,13 +370,13 @@ __inline MATR MatrRotate( DBL AngleInDegrees, VEC R )
 /* Matrix rotate by X axis function.
  * ARGUMENTS:
  *   - angle in degree to rotate:
- *       DBL AngleInDegree;
+ *       FLT AngleInDegree;
  * RETURNS:
  *   (MATR) result matrix.
  */
-__inline MATR MatrRotateX( DBL AngleInDegrees )
+__inline MATR MatrRotateX( FLT AngleInDegrees )
 {
-  DBL
+  FLT
     a = D2R(AngleInDegrees),
     si = sin(a), co = cos(a);
 
@@ -389,13 +389,13 @@ __inline MATR MatrRotateX( DBL AngleInDegrees )
 /* Matrix rotate by Y axis function.
  * ARGUMENTS:
  *   - angle in degree to rotate:
- *       DBL AngleInDegree;
+ *       FLT AngleInDegree;
  * RETURNS:
  *   (MATR) result matrix.
  */
-__inline MATR MatrRotateY( DBL AngleInDegrees )
+__inline MATR MatrRotateY( FLT AngleInDegrees )
 {
-  DBL
+  FLT
     a = D2R(AngleInDegrees),
     si = sin(a), co = cos(a);
 
@@ -408,13 +408,13 @@ __inline MATR MatrRotateY( DBL AngleInDegrees )
 /* Matrix rotate by Y axis function.
  * ARGUMENTS:
  *   - angle in degree to rotate:
- *       DBL AngleInDegree;
+ *       FLT AngleInDegree;
  * RETURNS:
  *   (MATR) result matrix.
  */
-__inline MATR MatrRotateZ( DBL AngleInDegrees )
+__inline MATR MatrRotateZ( FLT AngleInDegrees )
 {
-  DBL
+  FLT
     a = D2R(AngleInDegrees),
     si = sin(a), co = cos(a);
 
@@ -442,13 +442,13 @@ __inline MATR MatrTranspose( MATR M )
 /* 3x3 matrix determinator find function.
  * ARGUMENTS:
  *   - 3x3 matrix :
- *       DBL from A11 to A33;
+ *       FLT from A11 to A33;
  * RETURNS:
- *   (DBL) determinator.
+ *   (FLT) determinator.
  */
-__inline DBL MatrDeterm3x3( DBL A11, DBL A12, DBL A13,
-                            DBL A21, DBL A22, DBL A23,
-                            DBL A31, DBL A32, DBL A33 )
+__inline FLT MatrDeterm3x3( FLT A11, FLT A12, FLT A13,
+                            FLT A21, FLT A22, FLT A23,
+                            FLT A31, FLT A32, FLT A33 )
 {
   return A11 * A22 * A33 + A12 * A23 * A31 + A13 * A21 * A32 -
          A11 * A23 * A32 - A12 * A21 * A33 - A13 * A22 * A31;
@@ -459,9 +459,9 @@ __inline DBL MatrDeterm3x3( DBL A11, DBL A12, DBL A13,
  *   - matrix which determinator to be found:
  *       MATR;
  * RETURNS:
- *   (DBL) determinator.
+ *   (FLT) determinator.
  */
-__inline DBL MatrDeterm( MATR M )
+__inline FLT MatrDeterm( MATR M )
 {
   return
     M.A[0][0] * MatrDeterm3x3(M.A[1][1], M.A[1][2], M.A[1][3],
@@ -487,7 +487,7 @@ __inline DBL MatrDeterm( MATR M )
  */
 __inline MATR MatrInverse( MATR M )
 {
-  DBL det = MatrDeterm(M);
+  FLT det = MatrDeterm(M);
   MATR r;
 
   if (det == 0)
@@ -610,11 +610,11 @@ __inline MATR MatrView( VEC Loc, VEC At, VEC Up1 )
 /* Orthographics projection matrix setup function.
  * ARGUMENTS:
  *   - orthographic box side facets coordinates:
- *       DBL Left, Right, Bottom, Top, Near, Far;
+ *       FLT Left, Right, Bottom, Top, Near, Far;
  * RETURNS:
  *   (MATR) result matrix.
  */
-__inline MATR MatrOrtho( DBL Left, DBL Right, DBL Bottom, DBL Top, DBL Near, DBL Far )
+__inline MATR MatrOrtho( FLT Left, FLT Right, FLT Bottom, FLT Top, FLT Near, FLT Far )
 {
   MATR m =
   {
@@ -632,11 +632,11 @@ __inline MATR MatrOrtho( DBL Left, DBL Right, DBL Bottom, DBL Top, DBL Near, DBL
 /* Perspective (frustum) projection matrix setup function.
  * ARGUMENTS:
  *   - frustum side facets coordinates:
- *       DBL Left, Right, Bottom, Top, Near, Far;
+ *       FLT Left, Right, Bottom, Top, Near, Far;
  * RETURNS:
  *   (MATR) result matrix.
  */
-__inline MATR MatrFrustum( DBL Left, DBL Right, DBL Bottom, DBL Top, DBL Near, DBL Far )
+__inline MATR MatrFrustum( FLT Left, FLT Right, FLT Bottom, FLT Top, FLT Near, FLT Far )
 {
   MATR m =
   {

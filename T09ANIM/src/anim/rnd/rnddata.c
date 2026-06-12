@@ -1,0 +1,16 @@
+#include "rnd.h"
+
+HWND AM6_hRndWnd;                 /* Work window handle */
+HDC AM6_hRndDC;                   /* Work window memory device context  */
+/*HBITMAP AM6_hRndBmFrame;           Work window background bitmap handle */
+INT AM6_RndFrameW, AM6_RndFrameH; /* Work window size */
+
+DBL
+   AM6_RndProjSize = 0.1,         /* Project plane fit square */
+   AM6_RndProjDist = 0.1,         /* Distance to project plane from viewer (near) */
+   AM6_RndProjFarClip = 300;      /* Distance to project far clip plane (far) */
+
+MATR
+    AM6_RndMatrView,              /* View coordinate system matrix */
+    AM6_RndMatrProj,              /* Projection coordinate system matrix */
+    AM6_RndMatrVP;                /* Stored (View * Proj) matrix */

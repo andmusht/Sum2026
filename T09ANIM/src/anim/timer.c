@@ -1,4 +1,3 @@
-#include "timer.h"
 #include "anim.h"
 
 static UINT64
