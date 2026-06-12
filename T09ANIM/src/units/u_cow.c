@@ -19,7 +19,7 @@ typedef struct tagam6UNIT_COW
  */
 static VOID AM6_UnitInit( am6UNIT_COW *Uni, am6ANIM *Ani )
 {
-  AM6_RndPrimLoad(&Uni->Cow, "./bin/model/cow.obj");
+  AM6_RndPrimLoad(&Uni->Cow, "./bin/models/cow.obj");
   Uni->Pos = VecSet(10 + rand() * Ani->DeltaTime * 2.4, -10, -10);
 } /* End of 'AM6_UnitInit' function */
 
@@ -45,13 +45,13 @@ static VOID AM6_UnitResponse( am6UNIT_COW *Uni, am6ANIM *Ani )
  */
 static VOID AM6_UnitRender( am6UNIT_COW *Uni, am6ANIM *Ani )
 {
-  AM6_RndPrimDraw(&Uni->Cow, MatrTranslate(VecAddVec(Uni->Pos, VecSet(-10, fabs(sin(5 * Ani->Time)), -10))));
+  AM6_RndPrimDraw(&Uni->Cow, MatrMulMatr(MatrRotateY(Ani->Time * 100), MatrTranslate(VecAddVec(Uni->Pos, VecSet(-10, fabs(sin(5 * Ani->Time)), 0)))));
 } /* End of 'AM6_UnitClose' function */
 
 static VOID AM6_UnitClose( am6UNIT_COW *Uni, am6ANIM *Ani )
 {
   AM6_RndPrimFree(&Uni->Cow);
-} /* End of 'VG4_UnitClose' function */
+} /* End of 'AM6_UnitClose' function */
 
 /* Unit creation function.
  * ARGUMENTS:

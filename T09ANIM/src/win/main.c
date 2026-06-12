@@ -41,8 +41,8 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInctance,
     1500, 100, 500, 300, NULL, NULL, hInstance, NULL);
 
   srand(30);
-  for (i = 0; i < 10; i++)
-    AM6_AnimAddUnit(AM6_AnimUnitCreateBBalls());
+  /*for (i = 0; i < 10; i++)
+    AM6_AnimAddUnit(AM6_AnimUnitCreateBBalls());*/
   AM6_AnimAddUnit(AM6_AnimUnitCreateCow());
   AM6_AnimAddUnit(AM6_AnimUnitCreateControl());
   /* Main Program Loop */
@@ -81,10 +81,10 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
     AM6_AnimRender();
 
     /*hDC = GetDC(hWnd);
-    SelectObject(hDC, GetStockObject(BLACK_PEN));
+    SelectObject(hDC, GetStockObject(BLACK_PEN));*/
 
     AM6_AnimCopyFrame();
-    ReleaseDC(hWnd, hDC);*/
+    /*ReleaseDC(hWnd, hDC);*/
     return 0;
 
   case WM_ERASEBKGND:
@@ -92,7 +92,6 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
 
   case WM_PAINT:
     hDC = BeginPaint(hWnd, &pt);
-    /*AM6_AnimCopyFrame();*/
     EndPaint(hWnd, &pt);
     return 0;
 

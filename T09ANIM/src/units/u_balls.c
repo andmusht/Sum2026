@@ -20,11 +20,11 @@ typedef struct tagam6UNIT_BBALL
  */
 static VOID AM6_UnitInit( am6UNIT_BBALL *Uni, am6ANIM *Ani )
 {
-  AM6_RndPrimCreateSphere(&Uni->Ball, 1, 8, 8);
-  Uni->Pos = VecSet(5, 1, 6);
+  AM6_RndPrimCreateSphere(&Uni->Ball, 1, 18, 8);
+  Uni->Pos = VecSet(Rnd1() * 8, 1, Rnd1() * 8);
  
-  Uni->Shift = 1;
-  Uni->Scale = 3;
+  Uni->Shift = 1 + Rnd0() * 47;
+  Uni->Scale = 3 + Rnd1() * 0.5;
 } /* End of 'AM6_UnitInit' function */
 
 /* Unit inter frame events handle function.
@@ -49,13 +49,13 @@ static VOID AM6_UnitResponse( am6UNIT_BBALL *Uni, am6ANIM *Ani )
  */
 static VOID AM6_UnitRender( am6UNIT_BBALL *Uni, am6ANIM *Ani )
 {
-  AM6_RndPrimDraw(&Uni->Ball, MatrTranslate(VecAddVec(Uni->Pos, VecSet(0, fabs(sin(5 * Ani->Time)), 0))));
+  AM6_RndPrimDraw(&Uni->Ball, MatrMulMatr(MatrRotateY(60 * Ani->Time / 1000), MatrTranslate(VecSet(Uni->Pos.X, Uni->Pos.Y * cos(Ani->GlobalTime), Uni->Pos.Z))));
 } /* End of 'AM6_UnitClose' function */
 
 static VOID AM6_UnitClose( am6UNIT_BBALL *Uni, am6ANIM *Ani )
 {
   AM6_RndPrimFree(&Uni->Ball);
-} /* End of 'VG4_UnitClose' function */
+} /* End of 'AM6_UnitClose' function */
 
 /* Unit creation function.
  * ARGUMENTS:

@@ -31,20 +31,32 @@ VOID AM6_RndPrimDraw( am6PRIM *Pr, MATR World )
   MATR wvp = MatrMulMatr3(Pr->Trans, World, AM6_RndMatrVP);
   POINT *pnts;
 
-  if ((pnts = malloc(sizeof(POINT) * Pr->NumOfV)) == NULL)
-    return;
+  glLoadMatrixf(wvp.A[0]);
+
+  /*if ((pnts = malloc(sizeof(POINT) * Pr->NumOfV)) == NULL)
+    return;*/
 
   /* Build vertex projects */
-  for (i = 0; i < Pr->NumOfV; i++)
+  /*for (i = 0; i < Pr->NumOfV; i++)
   {
     VEC p = VecMulMatr(Pr->V[i].P, wvp);
 
     pnts[i].x = (INT)((p.X + 1) * AM6_RndFrameW / 2);
     pnts[i].y = (INT)((-p.Y + 1) * AM6_RndFrameH / 2);
+  }*/
+
+  /* Draw triangles by edges */
+  glBegin(GL_TRIANGLES);
+  for (i = 0; i < Pr->NumOfI; i++)
+  {
+    glColor4fv(&Pr->V[Pr->I[i]].C.X);
+    glVertex3fv(&Pr->V[Pr->I[i]].P.X);
   }
 
-  SelectObject(AM6_hRndDC, GetStockObject(BLACK_PEN));
-  for (i = 0; i < Pr->NumOfI; i += 3)
+  glEnd();
+
+  /*SelectObject(AM6_hRndDC, GetStockObject(BLACK_PEN));*/
+  /*for (i = 0; i < Pr->NumOfI; i += 3)
   {
     MoveToEx(AM6_hRndDC, pnts[Pr->I[i + 0]].x, pnts[Pr->I[i + 0]].y, NULL);
     LineTo(AM6_hRndDC, pnts[Pr->I[i + 1]].x,   pnts[Pr->I[i + 1]].y);
@@ -52,7 +64,7 @@ VOID AM6_RndPrimDraw( am6PRIM *Pr, MATR World )
     LineTo(AM6_hRndDC, pnts[Pr->I[i + 0]].x,   pnts[Pr->I[i + 0]].y);
   }
 
-  free(pnts);
+  free(pnts);*/
 }
 
 /* Create sphere primitive function.
@@ -160,7 +172,8 @@ BOOL AM6_RndPrimCreateCylinder( am6PRIM *Pr, DBL R, INT W, INT H )
 BOOL AM6_RndPrimLoad( am6PRIM *Pr, CHAR *FileName )
 {
   FILE *F;
-  INT nv = 0, nf = 0;
+  INT nv = 0, nf = 0, i;
+  VEC L = VecNormalize(VecSet1(1));
   static CHAR Buf[3000];
 
   memset(Pr, 0, sizeof(am6PRIM));
@@ -247,5 +260,52 @@ BOOL AM6_RndPrimLoad( am6PRIM *Pr, CHAR *FileName )
   }
 
   fclose(F);
+
+  AM6_RndPrimTriMeshAutoNormals(Pr->V, Pr->NumOfV, Pr->I, Pr->NumOfI);
+
+  for (i = 0; i < Pr->NumOfV; i++)
+  {
+    FLT nl = VecDotVec(Pr->V[i].N, L);
+
+    if (nl < 0.1)
+      nl = 0.1;
+    Pr->V[i].C = Vec4Set(0.54 * nl + 0.2, 0.17 * nl + 0.2, 0.80 * nl + 0.2, 1);
+  }
+
   return TRUE;
 } /* End of 'AM6_RndPrimLoad' function */
+
+/* Tri-mesh geometry autonormal evaluation function.
+ * ARGUMENTS:
+ *   - vertex array:
+ *       am6VERTEX *V;
+ *   - vertex array size:
+ *       INT NumOfV;
+ *   - index array:
+ *       INT *Ind;
+ *   - index array size:
+ *       INT NumOfI;
+ */
+VOID AM6_RndPrimTriMeshAutoNormals( am6VERTEX *V, INT NumOfV, INT *Ind, INT NumOfI )
+{
+  INT i;
+
+  for (i = 0; i < NumOfV; i++)
+    V[i].N = VecSet1(0);
+
+  for (i = 0; i < NumOfI; i += 3)
+  {
+    VEC
+      p0 = V[Ind[i]].P,
+      p1 = V[Ind[i + 1]].P,
+      p2 = V[Ind[i + 2]].P,
+      N = VecNormalize(VecCrossVec(VecSubVec(p1, p0), VecSubVec(p2, p0)));
+
+    V[Ind[i]].N = VecAddVec(V[Ind[i]].N, N);
+    V[Ind[i + 1]].N = VecAddVec(V[Ind[i + 1]].N, N);
+    V[Ind[i + 2]].N = VecAddVec(V[Ind[i + 2]].N, N);
+  }
+
+  for (i = 0; i < NumOfV; i++)
+    V[i].N = VecNormalize(V[i].N);
+} /* End of 'AM6_RndPrimTriMeshAutoNormals' function */

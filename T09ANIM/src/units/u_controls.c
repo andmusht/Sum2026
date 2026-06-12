@@ -22,7 +22,7 @@ typedef struct tagam6UNIT_CONTROL
 static VOID AM6_UnitInit( am6UNIT_CONTROL *Uni, am6ANIM *Ani )
 {
   Uni->CamLoc = VecSet(8, 8, 8);
-  Uni->CamAt = VecSet(0, 0, 0);
+  Uni->CamAt = VecSet(3, 3, 0);
 
   Uni->Speed = 10;
 } /* End of 'AM6_UnitInit' function */
@@ -41,7 +41,7 @@ static VOID AM6_UnitResponse( am6UNIT_CONTROL *Uni, am6ANIM *Ani )
 
   /*
   if (Ani->Keys[VK_CONTROL] && Ani->Keys['F'])
-    VG4_AnimFlipFullScreen();
+    AM6_AnimFlipFullScreen();
   */
 
   if (Ani->KeysClick['P'])
@@ -78,7 +78,7 @@ static VOID AM6_UnitRender( am6UNIT_CONTROL *Uni, am6ANIM *Ani )
 
 static VOID AM6_UnitClose( am6UNIT_CONTROL *Uni, am6ANIM *Ani )
 {
-} /* End of 'VG4_UnitClose' function */
+} /* End of 'AM6_UnitClose' function */
 
 /* Unit creation function.
  * ARGUMENTS:

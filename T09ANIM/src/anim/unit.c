@@ -10,7 +10,7 @@
  */
 static VOID AM6_UnitInit( am6UNIT *Uni, am6ANIM *Ani )
 {
-} /* End of 'VG4_UnitInit' function */
+} /* End of 'AM6_UnitInit' function */
 
 /* Unit deinitialization function.
  * ARGUMENTS:
@@ -22,7 +22,7 @@ static VOID AM6_UnitInit( am6UNIT *Uni, am6ANIM *Ani )
  */
 static VOID AM6_UnitClose( am6UNIT *Uni, am6ANIM *Ani )
 {
-} /* End of 'VG4_UnitClose' function */
+} /* End of 'AM6_UnitClose' function */
 
 /* Unit inter frame events handle function.
  * ARGUMENTS:
@@ -34,7 +34,7 @@ static VOID AM6_UnitClose( am6UNIT *Uni, am6ANIM *Ani )
  */
 static VOID AM6_UnitResponse( am6UNIT *Uni, am6ANIM *Ani )
 {
-} /* End of 'VG4_UnitResponse' function */
+} /* End of 'AM6_UnitResponse' function */
 
 /* Unit render function.
  * ARGUMENTS:

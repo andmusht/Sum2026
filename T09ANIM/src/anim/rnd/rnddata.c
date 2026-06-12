@@ -3,6 +3,7 @@
 HWND AM6_hRndWnd;                 /* Work window handle */
 HDC AM6_hRndDC;                   /* Work window memory device context  */
 /*HBITMAP AM6_hRndBmFrame;           Work window background bitmap handle */
+HGLRC AM6_hRndGLRC;
 INT AM6_RndFrameW, AM6_RndFrameH; /* Work window size */
 
 DBL

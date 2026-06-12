@@ -15,6 +15,7 @@
 extern HWND AM6_hRndWnd;                 /* Work window handle */
 extern HDC AM6_hRndDC;              /* Work window memory device context  */
 /*extern HBITMAP AM6_hRndBmFrame;           Work window background bitmap handle */
+extern HGLRC AM6_hRndGLRC;
 extern INT AM6_RndFrameW, AM6_RndFrameH; /* Work window size */
 
 extern DBL
@@ -34,7 +35,10 @@ extern MATR
 /* Vertex representation type */
 typedef struct tagam6VERTEX
 {
-  VEC P;  /* Vertex position */
+  VEC P;   /* Vertex position */
+  VEC2 T;  /* Vertex texture coordinate */
+  VEC N;   /* Vertex normal */
+  VEC4 C;  /* Vertex color */
 } am6VERTEX;
 
 /* Primitive representation type */
@@ -113,6 +117,20 @@ BOOL AM6_RndPrimLoad( am6PRIM *Pr, CHAR *FileName );
 BOOL AM6_RndPrimCreateSphere( am6PRIM *Pr, DBL R, INT W, INT H );
 
 BOOL AM6_RndPrimCreateCylinder( am6PRIM *Pr, DBL R, INT W, INT H );
+
+/* Tri-mesh geometry autonormal evaluation function.
+ * ARGUMENTS:
+ *   - vertex array:
+ *       am6VERTEX *V;
+ *   - vertex array size:
+ *       INT NumOfV;
+ *   - index array:
+ *       INT *Ind;
+ *   - index array size:
+ *       INT NumOfI;
+ */
+VOID AM6_RndPrimTriMeshAutoNormals( am6VERTEX *V, INT NumOfV, INT *Ind, INT NumOfI );
+
 
 
 #endif /* __rnd_h_ */

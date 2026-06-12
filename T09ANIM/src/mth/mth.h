@@ -46,6 +46,16 @@ typedef struct tagVEC
   FLT X, Y, Z; /* Vector coordinates */
 } VEC;
 
+typedef struct tagVEC2
+{
+  FLT X, Y; /* Vector coordinates */
+} VEC2;
+
+typedef struct tagVEC4
+{
+  FLT X, Y, Z, W; /* Vector coordinates */
+} VEC4;
+
 /* Transformation matrix representation type */
 typedef struct tagMATR
 {
@@ -65,6 +75,21 @@ __inline VEC VecSet( FLT X, FLT Y, FLT Z )
 
   return v;
 } /* End of 'VecSet' function */
+
+/* Vectors 4 set function.
+ * ARGUMENTS:
+ *   - coordinates of the vector:
+ *       FLT X, Y, Z, P;
+ * RETURNS:
+ *   (VEC) result vector.
+ */
+__inline VEC4 Vec4Set( FLT X, FLT Y, FLT Z, FLT W )
+{
+  VEC4 v = {X, Y, Z, W};
+
+  return v;
+} /* End of 'VecSet' function */
+
 
 /* Vectors set with one variable function.
  * ARGUMENTS:
@@ -650,6 +675,26 @@ __inline MATR MatrFrustum( FLT Left, FLT Right, FLT Bottom, FLT Top, FLT Near, F
 
   return m;
 } /* End of 'MatrFrustum' function */
+
+/* Random number obtain in range [0.0 .. 1.0] function.
+ * ARGUMENTS: None.
+ * RETURNS:
+ *   (DBL) result random number.
+ */
+__inline DBL Rnd0( VOID )
+{
+  return (DBL)rand() / RAND_MAX;
+} /* End of 'Rnd0' function */
+ 
+/* Random number obtain in range [-1.0 .. 1.0] function.
+ * ARGUMENTS: None.
+ * RETURNS:
+ *   (DBL) result random number.
+ */
+__inline DBL Rnd1( VOID )
+{
+  return 2.0 * rand() / RAND_MAX - 1;
+} /* End of 'Rnd1' function */
 
 #endif /* __mth_h_ */
 
