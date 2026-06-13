@@ -11,6 +11,14 @@
 
 #include <windows.h>
 
+#ifdef _MSC_VER
+  #define AM6_INLINE __inline
+#elif __MINGW32__
+  #define AM6_INLINE static inline
+#else
+  #define AM6_INLINE __inline
+#endif
+
 /* Pi math constant */
 #define PI 3.14159265358979323846
 
@@ -69,7 +77,7 @@ typedef struct tagMATR
  * RETURNS:
  *   (VEC) result vector.
  */
-__inline VEC VecSet( FLT X, FLT Y, FLT Z )
+AM6_INLINE VEC VecSet( FLT X, FLT Y, FLT Z )
 {
   VEC v = {X, Y, Z};
 
@@ -83,7 +91,7 @@ __inline VEC VecSet( FLT X, FLT Y, FLT Z )
  * RETURNS:
  *   (VEC) result vector.
  */
-__inline VEC4 Vec4Set( FLT X, FLT Y, FLT Z, FLT W )
+AM6_INLINE VEC4 Vec4Set( FLT X, FLT Y, FLT Z, FLT W )
 {
   VEC4 v = {X, Y, Z, W};
 
@@ -98,7 +106,7 @@ __inline VEC4 Vec4Set( FLT X, FLT Y, FLT Z, FLT W )
  * RETURNS:
  *   (VEC) result vector.
  */
-__inline VEC VecSet1( FLT A )
+AM6_INLINE VEC VecSet1( FLT A )
 {
   VEC v = {A, A, A};
 
@@ -112,7 +120,7 @@ __inline VEC VecSet1( FLT A )
  * RETURNS:
  *   (VEC) result vector.
  */
-__inline VEC VecAddVec( VEC V1, VEC V2 )
+AM6_INLINE VEC VecAddVec( VEC V1, VEC V2 )
 {
   return VecSet(V1.X + V2.X, V1.Y + V2.Y, V1.Z + V2.Z);
 } /* End of 'VecAddVec' function */
@@ -124,7 +132,7 @@ __inline VEC VecAddVec( VEC V1, VEC V2 )
  * RETURNS:
  *   (VEC) result vector.
  */
-__inline VEC VecSubVec( VEC V1, VEC V2 )
+AM6_INLINE VEC VecSubVec( VEC V1, VEC V2 )
 {
   return VecSet(V1.X - V2.X, V1.Y - V2.Y, V1.Z - V2.Z);
 } /* End of 'VecSubVec' function */
@@ -138,7 +146,7 @@ __inline VEC VecSubVec( VEC V1, VEC V2 )
  * RETURNS:
  *   (VEC) result vector.
  */
-__inline VEC VecMulNum( VEC V, FLT N )
+AM6_INLINE VEC VecMulNum( VEC V, FLT N )
 {
   return VecSet(V.X * N, V.Y * N, V.Z * N);
 } /* End of 'VecMulNum' function */
@@ -152,7 +160,7 @@ __inline VEC VecMulNum( VEC V, FLT N )
  * RETURNS:
  *   (VEC) result vector.
  */
-__inline VEC VecDivNum( VEC V, FLT N )
+AM6_INLINE VEC VecDivNum( VEC V, FLT N )
 {
   return VecSet(V.X / N, V.Y / N, V.Z / N);
 } /* End of 'VecDivNum' function */
@@ -164,7 +172,7 @@ __inline VEC VecDivNum( VEC V, FLT N )
  * RETURNS:
  *   (VEC) result vector.
  */
-__inline VEC VecNeg( VEC V )
+AM6_INLINE VEC VecNeg( VEC V )
 {
   return VecSet(-V.X, -V.Y, -V.Z);
 } /* End of 'VecNeg' function */
@@ -176,7 +184,7 @@ __inline VEC VecNeg( VEC V )
  * RETURNS:
  *   (FLT) result.
  */
-__inline FLT VecDotVec( VEC V1, VEC V2 )
+AM6_INLINE FLT VecDotVec( VEC V1, VEC V2 )
 {
   return V1.X * V2.X + V1.Y * V2.Y + V2.Z * V1.Z;
 } /* End of 'VecDotVec' function */
@@ -188,7 +196,7 @@ __inline FLT VecDotVec( VEC V1, VEC V2 )
  * RETURNS:
  *   (FLT) result.
  */
-__inline FLT VecLen( VEC V )
+AM6_INLINE FLT VecLen( VEC V )
 {
   FLT len = VecDotVec(V, V);
 
@@ -204,7 +212,7 @@ __inline FLT VecLen( VEC V )
  * RETURNS:
  *   (FLT) result.
  */
-__inline FLT VecLen2( VEC V )
+AM6_INLINE FLT VecLen2( VEC V )
 {
   FLT len = VecDotVec(V, V);
 
@@ -218,7 +226,7 @@ __inline FLT VecLen2( VEC V )
  * RETURNS:
  *   (FLT) result.
  */
-__inline VEC VecNormalize( VEC V )
+AM6_INLINE VEC VecNormalize( VEC V )
 {
   FLT len = VecDotVec(V, V);
 
@@ -235,7 +243,7 @@ __inline VEC VecNormalize( VEC V )
  * RETURNS:
  *   (VEC) result vector.
  */
-__inline VEC PointTransform( VEC V, MATR M )
+AM6_INLINE VEC PointTransform( VEC V, MATR M )
 {
   return VecSet(V.X * M.A[0][0] + V.Y * M.A[1][0] + V.Z * M.A[2][0] + M.A[3][0],
                 V.X * M.A[0][1] + V.Y * M.A[1][1] + V.Z * M.A[2][1] + M.A[3][1],
@@ -250,7 +258,7 @@ __inline VEC PointTransform( VEC V, MATR M )
  * RETURNS:
  *   (VEC) result vector.
  */
-__inline VEC VectorTransform( VEC V, MATR M )
+AM6_INLINE VEC VectorTransform( VEC V, MATR M )
 {
   return VecSet(V.X * M.A[0][0] + V.Y * M.A[1][0] + V.Z * M.A[2][0],
                 V.X * M.A[0][1] + V.Y * M.A[1][1] + V.Z * M.A[2][1],
@@ -263,7 +271,7 @@ __inline VEC VectorTransform( VEC V, MATR M )
  * RETURNS:
  *   (MATR) identity matrix.
  */
-__inline MATR MatrIdentity( VOID )
+AM6_INLINE MATR MatrIdentity( VOID )
 {
   MATR i = UnitMatrix;
   return i;
@@ -276,7 +284,7 @@ __inline MATR MatrIdentity( VOID )
  * RETURNS:
  *   (MATR) matrix we set.
  */
-__inline MATR MatrSet( FLT A00, FLT A01, FLT A02, FLT A03,
+AM6_INLINE MATR MatrSet( FLT A00, FLT A01, FLT A02, FLT A03,
                        FLT A10, FLT A11, FLT A12, FLT A13,
                        FLT A20, FLT A21, FLT A22, FLT A23,
                        FLT A30, FLT A31, FLT A32, FLT A33 )
@@ -301,7 +309,7 @@ __inline MATR MatrSet( FLT A00, FLT A01, FLT A02, FLT A03,
  * RETURNS:
  *   (MATR) matrix translated matrix.
  */
-__inline MATR MatrTranslate( VEC T )
+AM6_INLINE MATR MatrTranslate( VEC T )
 {
   MATR m = UnitMatrix;
 
@@ -320,7 +328,7 @@ __inline MATR MatrTranslate( VEC T )
  * RETURNS:
  *   (MATR) result matrix.
  */
-__inline MATR MatrMulMatr( MATR M1, MATR M2 )
+AM6_INLINE MATR MatrMulMatr( MATR M1, MATR M2 )
 {
   MATR r = {{{0}}};
   INT i, j, k;
@@ -341,7 +349,7 @@ __inline MATR MatrMulMatr( MATR M1, MATR M2 )
  * RETURNS:
  *   (VEC) result vector.
  */
-__inline VEC VecMulMatr( VEC V, MATR M )
+AM6_INLINE VEC VecMulMatr( VEC V, MATR M )
 {
   FLT w = V.X * M.A[0][3] + V.Y * M.A[1][3] + V.Z * M.A[2][3] + M.A[3][3];
 
@@ -350,7 +358,7 @@ __inline VEC VecMulMatr( VEC V, MATR M )
                 (V.X * M.A[0][2] + V.Y * M.A[1][2] + V.Z * M.A[2][2] + M.A[3][2]) / w);
 } /* End of 'VecMulMatr' function */
 
-__inline MATR MatrScale( VEC S )
+AM6_INLINE MATR MatrScale( VEC S )
 {
   return MatrSet(S.X, 0, 0, 0,
                  0, S.Y, 0, 0,
@@ -367,7 +375,7 @@ __inline MATR MatrScale( VEC S )
  * RETURNS:
  *   (MATR) result matrix.
  */
-__inline MATR MatrRotate( FLT AngleInDegrees, VEC R )
+AM6_INLINE MATR MatrRotate( FLT AngleInDegrees, VEC R )
 {
   FLT 
     a = D2R(AngleInDegrees),
@@ -399,7 +407,7 @@ __inline MATR MatrRotate( FLT AngleInDegrees, VEC R )
  * RETURNS:
  *   (MATR) result matrix.
  */
-__inline MATR MatrRotateX( FLT AngleInDegrees )
+AM6_INLINE MATR MatrRotateX( FLT AngleInDegrees )
 {
   FLT
     a = D2R(AngleInDegrees),
@@ -418,7 +426,7 @@ __inline MATR MatrRotateX( FLT AngleInDegrees )
  * RETURNS:
  *   (MATR) result matrix.
  */
-__inline MATR MatrRotateY( FLT AngleInDegrees )
+AM6_INLINE MATR MatrRotateY( FLT AngleInDegrees )
 {
   FLT
     a = D2R(AngleInDegrees),
@@ -437,7 +445,7 @@ __inline MATR MatrRotateY( FLT AngleInDegrees )
  * RETURNS:
  *   (MATR) result matrix.
  */
-__inline MATR MatrRotateZ( FLT AngleInDegrees )
+AM6_INLINE MATR MatrRotateZ( FLT AngleInDegrees )
 {
   FLT
     a = D2R(AngleInDegrees),
@@ -456,7 +464,7 @@ __inline MATR MatrRotateZ( FLT AngleInDegrees )
  * RETURNS:
  *   (MATR) transposed matrix.
  */
-__inline MATR MatrTranspose( MATR M )
+AM6_INLINE MATR MatrTranspose( MATR M )
 {
   return MatrSet(M.A[0][0], M.A[1][0], M.A[2][0], M.A[3][0],
                  M.A[0][1], M.A[1][1], M.A[2][1], M.A[3][1],
@@ -471,7 +479,7 @@ __inline MATR MatrTranspose( MATR M )
  * RETURNS:
  *   (FLT) determinator.
  */
-__inline FLT MatrDeterm3x3( FLT A11, FLT A12, FLT A13,
+AM6_INLINE FLT MatrDeterm3x3( FLT A11, FLT A12, FLT A13,
                             FLT A21, FLT A22, FLT A23,
                             FLT A31, FLT A32, FLT A33 )
 {
@@ -486,7 +494,7 @@ __inline FLT MatrDeterm3x3( FLT A11, FLT A12, FLT A13,
  * RETURNS:
  *   (FLT) determinator.
  */
-__inline FLT MatrDeterm( MATR M )
+AM6_INLINE FLT MatrDeterm( MATR M )
 {
   return
     M.A[0][0] * MatrDeterm3x3(M.A[1][1], M.A[1][2], M.A[1][3],
@@ -510,7 +518,7 @@ __inline FLT MatrDeterm( MATR M )
  * RETURNS:
  *   (MATR) inverse matrix.
  */
-__inline MATR MatrInverse( MATR M )
+AM6_INLINE MATR MatrInverse( MATR M )
 {
   FLT det = MatrDeterm(M);
   MATR r;
@@ -596,7 +604,7 @@ __inline MATR MatrInverse( MATR M )
  * RETURNS:
  *   (VEC) result vector.
  */
-__inline VEC VecCrossVec( VEC V1, VEC V2 )
+AM6_INLINE VEC VecCrossVec( VEC V1, VEC V2 )
 {
   VEC r;
 
@@ -613,7 +621,7 @@ __inline VEC VecCrossVec( VEC V1, VEC V2 )
  * RETURNS:
  *   (MATR) result matrix.
  */
-__inline MATR MatrView( VEC Loc, VEC At, VEC Up1 )
+AM6_INLINE MATR MatrView( VEC Loc, VEC At, VEC Up1 )
 {
   VEC
     Dir = VecNormalize(VecSubVec(At, Loc)),
@@ -639,7 +647,7 @@ __inline MATR MatrView( VEC Loc, VEC At, VEC Up1 )
  * RETURNS:
  *   (MATR) result matrix.
  */
-__inline MATR MatrOrtho( FLT Left, FLT Right, FLT Bottom, FLT Top, FLT Near, FLT Far )
+AM6_INLINE MATR MatrOrtho( FLT Left, FLT Right, FLT Bottom, FLT Top, FLT Near, FLT Far )
 {
   MATR m =
   {
@@ -661,7 +669,7 @@ __inline MATR MatrOrtho( FLT Left, FLT Right, FLT Bottom, FLT Top, FLT Near, FLT
  * RETURNS:
  *   (MATR) result matrix.
  */
-__inline MATR MatrFrustum( FLT Left, FLT Right, FLT Bottom, FLT Top, FLT Near, FLT Far )
+AM6_INLINE MATR MatrFrustum( FLT Left, FLT Right, FLT Bottom, FLT Top, FLT Near, FLT Far )
 {
   MATR m =
   {
@@ -681,7 +689,7 @@ __inline MATR MatrFrustum( FLT Left, FLT Right, FLT Bottom, FLT Top, FLT Near, F
  * RETURNS:
  *   (DBL) result random number.
  */
-__inline DBL Rnd0( VOID )
+AM6_INLINE DBL Rnd0( VOID )
 {
   return (DBL)rand() / RAND_MAX;
 } /* End of 'Rnd0' function */
@@ -691,7 +699,7 @@ __inline DBL Rnd0( VOID )
  * RETURNS:
  *   (DBL) result random number.
  */
-__inline DBL Rnd1( VOID )
+AM6_INLINE DBL Rnd1( VOID )
 {
   return 2.0 * rand() / RAND_MAX - 1;
 } /* End of 'Rnd1' function */
