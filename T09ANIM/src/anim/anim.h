@@ -42,6 +42,12 @@ typedef struct tagam6ANIM
   BYTE KeysClick[256];
 
   INT Mx, My, Mz, Mdx, Mdy, Mdz;
+
+  BYTE
+    JBut[32], JButClick[32]; /* Joystick button states */
+  INT JPov;                               /* Joystick point-of-view control [-1,0..7] */
+  DBL
+    JX, JY, JZ, JR;                       /* Joystick axes */
 };
 
 extern am6ANIM AM6_Anim;

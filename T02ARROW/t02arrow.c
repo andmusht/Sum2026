@@ -62,7 +62,7 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInctance,
   }
 
   /* Create Windows */
-  hWnd = CreateWindow(WND_CLASS_NAME, "Press me..", WS_OVERLAPPEDWINDOW | WS_VISIBLE | WS_CLIPCHILDREN,
+  hWnd = CreateWindow(WND_CLASS_NAME, "Press me", WS_OVERLAPPEDWINDOW | WS_VISIBLE | WS_CLIPCHILDREN,
     CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, hInstance, NULL);
   CreateWindow("BUTTON", "CLose", WS_CHILD | WS_VISIBLE,
     0, 0, 120, 60, hWnd, (HMENU)31, hInstance, NULL);

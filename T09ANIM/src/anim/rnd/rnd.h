@@ -10,6 +10,8 @@
 #define GLEW_STATIC
 
 #include <glew.h>
+
+#include "res/rndres.h"
 #include "def.h"
 
 extern HWND AM6_hRndWnd;                 /* Work window handle */
@@ -27,6 +29,24 @@ extern MATR
            AM6_RndMatrView,              /* View coordinate system matrix */
            AM6_RndMatrProj,              /* Projection coordinate system matrix */
            AM6_RndMatrVP;                /* Stored (View * Proj) matrix */
+extern VEC
+          AM6_RndCamLoc,
+          AM6_RndCamAt,
+          AM6_RndCamDir,
+          AM6_RndCamUp;
+
+extern VEC AM6_RndMatrRight;
+
+extern INT AM6_MouseWheel;
+
+VOID AM6_RndInit( HWND hWnd );
+VOID AM6_RndClose( VOID );
+VOID AM6_RndResize( INT W, INT H );
+VOID AM6_RndCopyFrame( VOID );
+VOID AM6_RndStart( VOID );
+VOID AM6_RndEnd( VOID );
+VOID AM6_RndProjSet( VOID );
+VOID AM6_RndCamSet( VEC Loc, VEC At, VEC Up );
 
 /***
  *  Primitive handle
@@ -41,39 +61,53 @@ typedef struct tagam6VERTEX
   VEC4 C;  /* Vertex color */
 } am6VERTEX;
 
+/* Primitive type */
+typedef enum tagam6PRIM_TYPE
+{
+  AM6_RND_PRIM_POINTS,   /* Array of points  – GL_POINTS */
+  AM6_RND_PRIM_LINES,    /* Line segments (by 2 points) – GL_LINES */
+  AM6_RND_PRIM_TRIMESH,  /* Triangle mesh - array of triangles – GL_TRIANGLES */
+} am6PRIM_TYPE;
+
+
 /* Primitive representation type */
 typedef struct tagam6PRIM
 {
-  am6VERTEX *V; /* Vertex attributes array */
-  INT NumOfV;   /* Number of vertices */
+  am6PRIM_TYPE Type; /* Primitive type */
 
-  INT *I;       /* Index array (for trimesh – by 3 ones) */
-  INT NumOfI;   /* Number of indices */
+  INT
+    VA,              /* Vertex array Id */
+    VBuf,            /* Vertex buffer Id */
+    IBuf;            /* Index buffer Id (if 0 - use only vertex buffer) */
+
+  INT NumOfElements; /* Number of indices/vecrtices */
+
+  VEC MinBB, MaxBB;  /* Bound box */
 
   MATR Trans;   /* Additional transformation matrix */
+
+  INT MtlNo;    /* Material number at stock array */
+
 } am6PRIM;
 
-
-VOID AM6_RndInit( HWND hWnd );
-VOID AM6_RndClose( VOID );
-VOID AM6_RndResize( INT W, INT H );
-VOID AM6_RndCopyFrame( VOID );
-VOID AM6_RndStart( VOID );
-VOID AM6_RndEnd( VOID );
-VOID AM6_RndProjSet( VOID );
-VOID AM6_RndCamSet( VEC Loc, VEC At, VEC Up );
-
-/* Primitive create function.
+/* Create primitive function.
  * ARGUMENTS:
- *   - primitive to be create:
+ *   - pointer to primitive to create:
  *       am6PRIM *Pr;
- *   - number of vertecis and indices:
- *       INT NoofV, NoofI;
- * RETURNS:
- *   (BOOL) TRUE if success, FLASE otherwise.
+ *   - primitive type:
+ *       am6PRIM_TYPE Type;
+ *   - vertex attributes array:
+ *       am6VERTEX *V;
+ *   - vertex attributes array size:
+ *       INT NoofV;
+ *   - primitive vertex index array:
+ *       INT *Ind;
+ *   - primitive vertex index array size:
+ *       INT NoofI;
+ * RETURNS: None.
  */
-BOOL AM6_RndPrimCreate( am6PRIM *Pr, INT NoofV, INT NoofI );
-
+VOID AM6_RndPrimCreate( am6PRIM *Pr, am6PRIM_TYPE Type,
+                        am6VERTEX *V, INT NoofV, INT *Ind, INT NoofI );
 /* Primitive free function.
  * ARGUMENTS:
  *   - primitive to be free:
@@ -116,8 +150,6 @@ BOOL AM6_RndPrimLoad( am6PRIM *Pr, CHAR *FileName );
  */
 BOOL AM6_RndPrimCreateSphere( am6PRIM *Pr, DBL R, INT W, INT H );
 
-BOOL AM6_RndPrimCreateCylinder( am6PRIM *Pr, DBL R, INT W, INT H );
-
 /* Tri-mesh geometry autonormal evaluation function.
  * ARGUMENTS:
  *   - vertex array:
@@ -130,7 +162,5 @@ BOOL AM6_RndPrimCreateCylinder( am6PRIM *Pr, DBL R, INT W, INT H );
  *       INT NumOfI;
  */
 VOID AM6_RndPrimTriMeshAutoNormals( am6VERTEX *V, INT NumOfV, INT *Ind, INT NumOfI );
-
-
 
 #endif /* __rnd_h_ */

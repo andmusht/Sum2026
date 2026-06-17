@@ -704,6 +704,34 @@ AM6_INLINE DBL Rnd1( VOID )
   return 2.0 * rand() / RAND_MAX - 1;
 } /* End of 'Rnd1' function */
 
+/* Obtain minimum of two vectors function.
+ * ARGUMENTS:
+ *   - vectors to be compare:
+ *       VEC V1, V2;
+ * RETURNS:
+ *   (VEC) result vector.
+ */
+AM6_INLINE VEC VecMinVec( VEC V1, VEC V2 )
+{
+  return VecSet(V1.X < V2.X ? V1.X : V2.X,
+                V1.Y < V2.Y ? V1.Y : V2.Y,
+                V1.Z < V2.Z ? V1.Z : V2.Z);
+} /* End of 'VecMinVec' function */
+
+/* Obtain miaximum of two vectors function.
+ * ARGUMENTS:
+ *   - vectors to be compare:
+ *       VEC V1, V2;
+ * RETURNS:
+ *   (VEC) result vector.
+ */
+AM6_INLINE VEC VecMaxVec( VEC V1, VEC V2 )
+{
+  return VecSet(V1.X > V2.X ? V1.X : V2.X,
+                V1.Y > V2.Y ? V1.Y : V2.Y,
+                V1.Z > V2.Z ? V1.Z : V2.Z);
+} /* End of 'VecMaxVec' function */
+
 #endif /* __mth_h_ */
 
 /* END OF 'mth.h' FILE */

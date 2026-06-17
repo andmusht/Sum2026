@@ -9,9 +9,13 @@ INT AM6_RndFrameW, AM6_RndFrameH; /* Work window size */
 DBL
    AM6_RndProjSize = 0.1,         /* Project plane fit square */
    AM6_RndProjDist = 0.1,         /* Distance to project plane from viewer (near) */
-   AM6_RndProjFarClip = 300;      /* Distance to project far clip plane (far) */
+   AM6_RndProjFarClip = 3000;      /* Distance to project far clip plane (far) */
 
 MATR
     AM6_RndMatrView,              /* View coordinate system matrix */
     AM6_RndMatrProj,              /* Projection coordinate system matrix */
     AM6_RndMatrVP;                /* Stored (View * Proj) matrix */
+
+VEC AM6_RndMatrRight;
+
+INT AM6_MouseWheel;

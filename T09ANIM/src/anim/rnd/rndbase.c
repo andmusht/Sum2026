@@ -7,8 +7,7 @@
 
 VOID AM6_RndInit( HWND hWnd )
 {
-  INT i;
-  UINT nums;
+  INT i, i1[10];
   PIXELFORMATDESCRIPTOR pfd = {0};
   HGLRC hRC;
   INT PixelAttribs[] =
@@ -34,7 +33,7 @@ VOID AM6_RndInit( HWND hWnd )
   AM6_hRndWnd = hWnd;
  
   /* Prepare frame compatible device contesxt */
-  AM6_hRndDC = GetDC(hWnd);
+  AM6_hRndDC = GetDC(AM6_hRndWnd);
  
   /* OpenGL init: pixel format setup */
   pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
@@ -50,22 +49,20 @@ VOID AM6_RndInit( HWND hWnd )
   /* OpenGL init: rendering context setup */
   AM6_hRndGLRC = wglCreateContext(AM6_hRndDC);
   wglMakeCurrent(AM6_hRndDC, AM6_hRndGLRC);
+
+  if (glewInit() != GLEW_OK)
+    exit(0);
  
   /* Render parameters setup */
-  
- 
   AM6_RndProjSize = 0.1;
   AM6_RndProjDist = AM6_RndProjSize;
-  AM6_RndProjFarClip = 300;
+  AM6_RndProjFarClip = 3000;
   AM6_RndFrameW = 47;
   AM6_RndFrameH = 47;
   AM6_RndCamSet(VecSet(5, 5, 5), VecSet(0, 0, 0), VecSet(0, 1, 0));
 
-  if (glewInit() != GLEW_OK)
-    exit(0);
-
   /* Enable a new OpenGL profile support */
-  wglChoosePixelFormatARB(AM6_hRndDC, PixelAttribs, NULL, 1, &i, &nums);
+  wglChoosePixelFormatARB(AM6_hRndDC, PixelAttribs, NULL, 1, &i, i1);
   hRC = wglCreateContextAttribsARB(AM6_hRndDC, NULL, ContextAttribs);
  
   wglMakeCurrent(NULL, NULL);
@@ -74,6 +71,8 @@ VOID AM6_RndInit( HWND hWnd )
   AM6_hRndGLRC = hRC;
   wglMakeCurrent(AM6_hRndDC, AM6_hRndGLRC);
   glEnable(GL_DEPTH_TEST);
+
+  AM6_RndResInit();
 }
 
 VOID AM6_RndClose( VOID )
