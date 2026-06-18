@@ -11,7 +11,7 @@
 
 #include <glew.h>
 
-#include "res/rndres.h"
+#include "anim/rnd/res/rndres.h"
 #include "def.h"
 
 extern HWND AM6_hRndWnd;                 /* Work window handle */
@@ -162,5 +162,84 @@ BOOL AM6_RndPrimCreateSphere( am6PRIM *Pr, DBL R, INT W, INT H );
  *       INT NumOfI;
  */
 VOID AM6_RndPrimTriMeshAutoNormals( am6VERTEX *V, INT NumOfV, INT *Ind, INT NumOfI );
+
+/* Debug output function.
+ * ARGUMENTS:
+ *   - source APi or device:
+ *       UINT Source;
+ *   - error type:
+ *       UINT Type;
+ *   - error message id:
+ *       UINT Id, 
+ *   - message severity:
+ *       UINT severity, 
+ *   - message text length:
+ *       INT Length, 
+ *   - message text:
+ *       CHAR *Message, 
+ *   - user addon parameters pointer:
+ *       VOID *UserParam;
+ * RETURNS: None.
+ */
+VOID APIENTRY glDebugOutput( UINT Source, UINT Type, UINT Id, UINT Severity,
+                             INT Length, const CHAR *Message,
+                             const VOID *UserParam );
+
+/***
+ * Primitives support
+ ***/
+
+extern INT AM6_RndShdAddonI[8];
+extern INT AM6_RndShdAddonF[8];
+extern INT AM6_RndShdAddonV[8];
+
+/* Primitive collection data type */
+typedef struct tagam6PRIMS
+{
+  INT NumOfPrims; /* Number of primitives in array */  
+  am6PRIM *Prims; /* Array of primitives */
+  MATR Trans;     /* Common transformation matrix */
+} am6PRIMS;
+
+/* Create array of primitives function.
+ * ARGUMENTS:
+ *   - pointer to primitives structure:
+ *       am6PRIMS *Prs;
+ *   - number of primitives to be add:
+ *       INT NumOfPrims;
+ * RETURNS:
+ *   (BOOL) TRUE if successful, FALSE otherwise.
+ */
+BOOL AM6_RndPrimsCreate( am6PRIMS *Prs, INT NumOfPrims );
+
+/* Delete array of primitives function.
+ * ARGUMENTS:
+ *   - pointer to primitives structure:
+ *       am6PRIMS *Prs;
+ * RETURNS: None.
+ */
+VOID AM6_RndPrimsFree( am6PRIMS *Prs );
+
+/* Draw array of primitives function.
+ * ARGUMENTS:
+ *   - pointer to primitives structure:
+ *       am6PRIMS *Prs;
+ *   - global transformation matrix:
+ *       MATR World;
+ * RETURNS: None.
+ */
+VOID AM6_RndPrimsDraw( am6PRIMS *Prs, MATR World );
+
+/* Load primitives from '*.G3DM' file function.
+ * ARGUMENTS:
+ *   - pointer to primitives to create:
+ *       am6PRIMS *Prs;
+ *   - '*.G3DM' file name:
+ *       CHAR *FileName;
+ * RETURNS:
+ *   (BOOL) TRUE if success, FALSE otherwise.
+ */
+BOOL AM6_RndPrimsLoad( am6PRIMS *Prs, CHAR *FileName );
+
 
 #endif /* __rnd_h_ */

@@ -39,12 +39,11 @@ static VOID AM6_UnitInit( am6UNIT_CONTROL *Uni, am6ANIM *Ani )
  */
 static VOID AM6_UnitResponse( am6UNIT_CONTROL *Uni, am6ANIM *Ani )
 {
-{
   VEC d;
 
   /*
   if (Ani->Keys[VK_CONTROL] && Ani->Keys['F'])
-    VG4_AnimFlipFullScreen();
+    AM6_AnimFlipFullScreen();
   */
 
   if (Ani->KeysClick['P'])

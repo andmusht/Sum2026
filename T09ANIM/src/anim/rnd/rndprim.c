@@ -2,6 +2,7 @@
 
 #include "rnd.h"
 #include "anim/anim.h"
+#include "res/rndres.h"
 
 /* Primitive free function.
  * ARGUMENTS:
@@ -104,22 +105,33 @@ VOID AM6_RndPrimCreate( am6PRIM *Pr, am6PRIM_TYPE Type,
  */
 VOID AM6_RndPrimDraw( am6PRIM *Pr, MATR World )
 {
-  MATR wvp = MatrMulMatr3(Pr->Trans, World, AM6_RndMatrVP);
+  MATR 
+    w = MatrMulMatr(Pr->Trans, World),
+    winv = MatrTranspose(MatrInverse(w)),
+    wvp = MatrMulMatr(w, AM6_RndMatrVP);
   INT
     loc,
     prim_type =
       Pr->Type == AM6_RND_PRIM_LINES ? GL_LINES :
       Pr->Type == AM6_RND_PRIM_TRIMESH ? GL_TRIANGLES :
-      GL_POINTS,
-      ProgId;
+      GL_POINTS;
+  UINT ProgId;
+  
+  if ((ProgId = AM6_RndMtlApply(Pr->MtlNo)) == 0)
+    return;
 
-  ProgId = AM6_RndShaders[0].ProgId;
   glUseProgram(ProgId);
 
   if ((loc = glGetUniformLocation(ProgId, "MatrWVP")) != -1)
     glUniformMatrix4fv(loc, 1, FALSE, wvp.A[0]);
   if ((loc = glGetUniformLocation(ProgId, "Time")) != -1)
     glUniform1f(loc, AM6_Anim.Time);
+  if ((loc = glGetUniformLocation(ProgId, "MatrW")) != -1)
+    glUniformMatrix4fv(loc, 1, FALSE, w.A[0]);
+  if ((loc = glGetUniformLocation(ProgId, "MatrWInv")) != -1)
+    glUniformMatrix4fv(loc, 1, FALSE, winv.A[0]);
+  if ((loc = glGetUniformLocation(ProgId, "CamLoc")) != -1)
+    glUniform3fv(loc, 1, &AM6_RndCamLoc.X);
 
   glBindVertexArray(Pr->VA);
   if (Pr->IBuf == 0)

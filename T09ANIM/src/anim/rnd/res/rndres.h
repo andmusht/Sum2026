@@ -1,8 +1,7 @@
-#ifndef __rnd_h_
-#define __rnd_h_
+#ifndef __rndres_h_
+#define __rndres_h_
 
 #include "def.h"
-#include "anim/rnd/rnd.h"
 
 /* Shaders stock maximum size */
 #define AM6_STR_MAX 300
@@ -49,10 +48,10 @@ extern INT AM6_RndMaterialsSize;                        /* Materials array */
 VOID AM6_RndMtlInit( VOID );
 VOID AM6_RndMtlClose( VOID );
 
-extern am6MATERIAL AM6_RndMtlGetDef( VOID );
-extern INT AM6_RndMtlAdd( am6MATERIAL *Mtl );
+am6MATERIAL AM6_RndMtlGetDef( VOID );
+INT AM6_RndMtlAdd( am6MATERIAL *Mtl );
 UINT AM6_RndMtlApply( INT MtlNo );
-
+//am6MATERIAL AM6_RndMtlGet( INT MtlNo );
 
 /* Texture representation type */
 typedef struct tagam6TEXTURE
@@ -69,4 +68,4 @@ extern INT AM6_RndTexturesSize;                      /* Textures array store siz
 VOID AM6_RndTexInit( VOID );
 VOID AM6_RndTexClose( VOID );
 
-#endif /* __rnd_h_ */
+#endif /* __rndres_h_ */

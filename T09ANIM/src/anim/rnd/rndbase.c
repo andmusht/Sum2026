@@ -52,31 +52,51 @@ VOID AM6_RndInit( HWND hWnd )
 
   if (glewInit() != GLEW_OK)
     exit(0);
- 
+
+  /* Enable a new OpenGL profile support */
+  wglChoosePixelFormatARB(AM6_hRndDC, PixelAttribs, NULL, 1, i1, &i);
+  hRC = wglCreateContextAttribsARB(AM6_hRndDC, NULL, ContextAttribs);
+
+  if (hRC != NULL)
+  {
+    wglMakeCurrent(NULL, NULL);
+    wglDeleteContext(AM6_hRndGLRC);
+    AM6_hRndGLRC = hRC;
+    wglMakeCurrent(AM6_hRndDC, AM6_hRndGLRC);
+  }
+
+#ifndef NDEBUG
+  OutputDebugString(glGetString(GL_VERSION));
+  OutputDebugString("\n");
+  OutputDebugString(glGetString(GL_VENDOR));
+  OutputDebugString("\n");
+  OutputDebugString(glGetString(GL_RENDERER));
+  OutputDebugString("\n");
+
+  glEnable(GL_DEBUG_OUTPUT);
+  glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+  glDebugMessageCallback(glDebugOutput, NULL);
+#endif /* NDEBUG */
+
   /* Render parameters setup */
+  glEnable(GL_DEPTH_TEST);
+  wglSwapIntervalEXT(0);
   AM6_RndProjSize = 0.1;
   AM6_RndProjDist = AM6_RndProjSize;
   AM6_RndProjFarClip = 3000;
   AM6_RndFrameW = 47;
   AM6_RndFrameH = 47;
-  AM6_RndCamSet(VecSet(5, 5, 5), VecSet(0, 0, 0), VecSet(0, 1, 0));
+  AM6_RndCamSet(VecSet(5, 5, 5), VecSet(0, 0, 0), VecSet(0, 1, 0)); 
 
-  /* Enable a new OpenGL profile support */
-  wglChoosePixelFormatARB(AM6_hRndDC, PixelAttribs, NULL, 1, &i, i1);
-  hRC = wglCreateContextAttribsARB(AM6_hRndDC, NULL, ContextAttribs);
- 
-  wglMakeCurrent(NULL, NULL);
-  wglDeleteContext(AM6_hRndGLRC);
- 
-  AM6_hRndGLRC = hRC;
-  wglMakeCurrent(AM6_hRndDC, AM6_hRndGLRC);
-  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_BLEND);
 
   AM6_RndResInit();
 }
 
 VOID AM6_RndClose( VOID )
 {
+  AM6_RndResClose();
+
   wglMakeCurrent(NULL, NULL);
   wglDeleteContext(AM6_hRndGLRC);
   ReleaseDC(AM6_hRndWnd, AM6_hRndDC);
@@ -131,5 +151,6 @@ VOID AM6_RndProjSet( VOID )
 VOID AM6_RndCamSet( VEC Loc, VEC At, VEC Up )
 {
   AM6_RndMatrView = MatrView(Loc, At, Up);
+  AM6_RndMatrRight = MatrRight(Loc, At, Up);
   AM6_RndMatrVP = MatrMulMatr(AM6_RndMatrView, AM6_RndMatrProj);
 }

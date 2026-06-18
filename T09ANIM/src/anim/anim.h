@@ -1,4 +1,4 @@
-#include "rnd/rnd.h"
+#include "anim/rnd/rnd.h"
 
 typedef struct tagam6ANIM am6ANIM;
 typedef struct tagam6UNIT am6UNIT;
@@ -36,7 +36,8 @@ typedef struct tagam6ANIM
     FPS;                         /* Frames per second value */
 
   BOOL
-    IsPause;                     /* Pause flag */
+    IsPause,                     /* Pause flag */
+    IsActive;
 
   BYTE Keys[256];
   BYTE KeysClick[256];

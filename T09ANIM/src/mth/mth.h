@@ -640,12 +640,20 @@ AM6_INLINE MATR MatrView( VEC Loc, VEC At, VEC Up1 )
   return m;
 } /* End of 'MatrView' function */
 
+AM6_INLINE VEC MatrRight( VEC Loc, VEC At, VEC Up1 )
+{
+ VEC
+    Dir = VecNormalize(VecSubVec(Up1, Loc));
+
+  return VecNormalize(VecCrossVec(Dir, Up1));
+}
+
 /* Orthographics projection matrix setup function.
  * ARGUMENTS:
  *   - orthographic box side facets coordinates:
  *       FLT Left, Right, Bottom, Top, Near, Far;
  * RETURNS:
- *   (MATR) result matrix.
+ *   (MATR  ) result matrix.
  */
 AM6_INLINE MATR MatrOrtho( FLT Left, FLT Right, FLT Bottom, FLT Top, FLT Near, FLT Far )
 {

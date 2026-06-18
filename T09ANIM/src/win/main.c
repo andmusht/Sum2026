@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "units/units.h"
 
 #define WND_CLASS_NAME "tung tung tung sahur"
@@ -12,11 +13,35 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInctance,
   MSG msg;
   HWND hWnd;
   MATR m;
-  INT i;
+  INT i;  CONSOLE_FONT_INFOEX cfi = {0};
+  HWND hConWnd;
+ 
+  SetDbgMemHooks();
+
+  /* Create console */
+  AllocConsole();
+ 
+  cfi.cbSize = sizeof(CONSOLE_FONT_INFOEX);
+  GetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
+  cfi.dwFontSize.Y = 18;
+  cfi.FontWeight = FW_BOLD;
+  SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
+ 
+  freopen("CONOUT$", "w", stdout);
+  system("@chcp 1251 > nul");
+  printf("\x1b[38;2;%d;%d;%dm \x1b[48;2;%d;%d;%dm", 255, 255, 0, 0, 102, 102);
+  printf("Группа компьютерной графики ФМЛ № 30\n");
+  printf("\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm", 0, 255, 0, 90, 90, 90);
+  printf("Computer Graphics Support Group\n");
+  printf("\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm", 255, 255, 255, 0, 0, 0);
+  fflush(stdout);
+ 
+  hConWnd = GetConsoleWindow();
+  /* MoveWindow(hConWnd, 2560 + 1920 / 2, 0, 1920 / 2, 1080, FALSE); */
+  SetWindowPos(hConWnd, HWND_TOP, 2560 + 1920 / 2, 0, 1920 / 2, 1000, 0);
 
   m = MatrView(VecSet(0, 0, 5), VecSet(0, 0, 0), VecSet(0, 1, 0));
 
-  SetDbgMemHooks();
 
   /* Windows Class Register */
   wc.style = CS_VREDRAW | CS_HREDRAW;
@@ -94,6 +119,31 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
     hDC = BeginPaint(hWnd, &pt);
     EndPaint(hWnd, &pt);
     return 0;
+
+  case WM_MOUSEWHEEL:
+    AM6_MouseWheel += (SHORT)HIWORD(wParam);
+    return 0;
+
+  case WM_LBUTTONDOWN:
+    SetCapture(hWnd);
+    return 0;
+
+  case WM_LBUTTONUP:
+    ReleaseCapture();
+    return 0;
+
+  case WM_ACTIVATE:
+    AM6_Anim.IsActive = LOWORD(wParam) != WA_INACTIVE;
+    return 0;
+
+  case WM_ENTERSIZEMOVE:
+    AM6_Anim.IsActive = FALSE;
+    return 0;
+
+  case WM_EXITSIZEMOVE:
+    AM6_Anim.IsActive = TRUE;
+    return 0;
+
 
   case WM_DESTROY:
     AM6_AnimClose();

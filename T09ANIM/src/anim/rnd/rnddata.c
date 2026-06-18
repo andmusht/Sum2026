@@ -19,3 +19,7 @@ MATR
 VEC AM6_RndMatrRight;
 
 INT AM6_MouseWheel;
+
+INT AM6_RndShdAddonI[8];
+INT AM6_RndShdAddonF[8];
+INT AM6_RndShdAddonV[8];

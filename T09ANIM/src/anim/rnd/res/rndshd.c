@@ -1,24 +1,26 @@
 /* FILE NAME  : rndshd.c
  * PROGRAMMER : AM6
- * LAST UPDATE: 17.06.2026
+ * LAST UPDATE: 13.06.2026
  * PURPOSE    : 3D animation project.
  *              Rendering resources declaration module.
  */
-
+ 
 #include <stdio.h>
 #include <time.h>
-
+ 
 #include "anim/rnd/rnd.h"
-
+ 
+/* Global shader */
+UINT AM6_RndProgId;
 /* Array of shaders */
 am6SHADER AM6_RndShaders[AM6_MAX_SHADERS];
 /* Shadres array store size */
 INT AM6_RndShadersSize;
-
+ 
 /***
  * Shaders handle functions
  ***/
-
+ 
 /* Save log to file function.
  * ARGUMENTS:
  *   - shader prefix:
@@ -32,13 +34,13 @@ INT AM6_RndShadersSize;
 static VOID AM6_RndShdLog( CHAR *FileNamePrefix, CHAR *ShaderName, CHAR *Text )
 {
   FILE *F;
-
+ 
   if ((F = fopen("bin/shaders/shd{30}am6.log", "a")) == NULL)
     return;
   fprintf(F, "%s : %s\n%s\n\n", FileNamePrefix, ShaderName, Text);
   fclose(F);
 } /* End of 'AM6_RndLoadTextFromFile' function */
-
+ 
 /* Load shader text from file function.
  * ARGUMENTS:
  *   - text file name:
@@ -51,28 +53,29 @@ static CHAR * AM6_RndLoadTextFromFile( CHAR *FileName )
   FILE *F;
   INT flen;
   CHAR *txt;
-
+ 
   if ((F = fopen(FileName, "rb")) == NULL)
     return NULL;
-
+ 
   /* Measure file length */
   fseek(F, 0, SEEK_END);
   flen = ftell(F);
-
+ 
   /* Allocate memory */
   if ((txt = malloc(flen + 1)) == NULL)
   {
     fclose(F);
     return NULL;
   }
-
-  rewind(F);
   memset(txt, 0, flen + 1);
+ 
+  /* Load text */
+  rewind(F);
   fread(txt, 1, flen, F);
   fclose(F);
   return txt;
 } /* End of 'AM6_RndLoadTextFromFile' function */
-
+ 
 /* Load shader program function.
  * ARGUMENTS:
  *   - shader folder prefix (in 'BIN/SHADERS/***'):
@@ -80,7 +83,7 @@ static CHAR * AM6_RndLoadTextFromFile( CHAR *FileName )
  * RETUNS:
  *   (UINT) load shader program Id.
  */
-static UINT AM6_RndShdLoad( CHAR *ShadersFileNamePrefix )
+static UINT AM6_RndShdLoad( CHAR *FileNamePrefix )
 {
   CHAR *txt;
   struct
@@ -97,53 +100,52 @@ static UINT AM6_RndShdLoad( CHAR *ShadersFileNamePrefix )
   UINT prg;
   BOOL is_ok = TRUE;
   static CHAR Buf[10000];
-
-  for (i = 0; is_ok && i < NoofS; i++)
+ 
+  for (i = 0; i < NoofS; i++)
   {
     /* Build shader file name */
-    sprintf(Buf, "bin/shaders/%s/%s.glsl", ShadersFileNamePrefix, shd[i].Name);
-
+    sprintf(Buf, "bin/shaders/%s/%s.glsl", FileNamePrefix, shd[i].Name);
+ 
     /* Load shader text from file */
-
-    if ((txt = AM6_RndLoadTextFromFile(Buf)) == NULL)
+    txt = AM6_RndLoadTextFromFile(Buf);
+    if (txt == NULL)
     {
-      AM6_RndShdLog(ShadersFileNamePrefix, shd[i].Name, "Error load file");
+      AM6_RndShdLog(FileNamePrefix, shd[i].Name, "Error load file");
       is_ok = FALSE;
       break;
     }
-
     /* Create shader */
-    if ((shd[i].Id = glCreateShader(shd[i].Type)) == 0)
+    shd[i].Id = glCreateShader(shd[i].Type);
+    if (shd[i].Id == 0)
     {
-      AM6_RndShdLog(ShadersFileNamePrefix, shd[i].Name, "Error create shader");
-      free(txt);
+      AM6_RndShdLog(FileNamePrefix, shd[i].Name, "Error create shader");
       is_ok = FALSE;
       break;
     }
-
+ 
     /* Send shader source text to OpenGL */
     glShaderSource(shd[i].Id, 1, &txt, NULL);
     free(txt);
-
+ 
     /* Compile shader */
     glCompileShader(shd[i].Id);
-
+ 
     /* Errors handle */
     glGetShaderiv(shd[i].Id, GL_COMPILE_STATUS, &res);
     if (res != 1)
     {
       glGetShaderInfoLog(shd[i].Id, sizeof(Buf), &res, Buf);
-      AM6_RndShdLog(ShadersFileNamePrefix, shd[i].Name, Buf);
+      AM6_RndShdLog(FileNamePrefix, shd[i].Name, Buf);
       is_ok = FALSE;
       break;
     }
   }
-
+ 
   /* Create program */
   if (is_ok)
     if ((prg = glCreateProgram()) == 0)
     {
-      AM6_RndShdLog(ShadersFileNamePrefix, "PROG", "Error create program");
+      AM6_RndShdLog(FileNamePrefix, "PROG", "Error create program");
       is_ok = FALSE;
     }
     else
@@ -158,12 +160,13 @@ static UINT AM6_RndShdLoad( CHAR *ShadersFileNamePrefix )
       glGetProgramiv(prg, GL_LINK_STATUS, &res);
       if (res != 1)
       {
-        glGetProgramInfoLog(prg, sizeof(Buf), &res, Buf);
-        AM6_RndShdLog(ShadersFileNamePrefix, "PROG", Buf);
+        glGetProgramInfoLog(shd[i].Id, sizeof(Buf), &res, Buf);
+        AM6_RndShdLog(FileNamePrefix, "PROG", Buf);
         is_ok = FALSE;
       }
     }
-
+ 
+ 
   /* Error handle */
   if (!is_ok)
   {
@@ -182,7 +185,7 @@ static UINT AM6_RndShdLoad( CHAR *ShadersFileNamePrefix )
   }
   return prg;
 } /* End of 'AM6_RndShdLoad' function */
-
+ 
 /* Delete shader program function.
  * ARGUMENTS:
  *   - shader program Id:
@@ -192,10 +195,10 @@ static UINT AM6_RndShdLoad( CHAR *ShadersFileNamePrefix )
 static VOID AM6_RndShdFree( UINT ProgId )
 {
   INT shds[5], n, i;
-
+ 
   if (ProgId == 0 || !glIsProgram(ProgId))
     return;
-
+ 
   glGetAttachedShaders(ProgId, 5, &n, shds);
   for (i = 0; i < n; i++)
     if (glIsShader(shds[i]))
@@ -205,96 +208,43 @@ static VOID AM6_RndShdFree( UINT ProgId )
     }
   glDeleteProgram(ProgId);
 } /* End of 'AM6_RndShdFree' function */
-
-/* Shaders initialization function.
- * ARGUMENTS: None.
- * RETURNS: None.
- */
-VOID AM6_RndShdDelete( INT ProgId )
-{
-  INT shdrs[5], n, i;
-
-  if (ProgId == 0 || !glIsProgram(ProgId))
-    return;
-
-  glGetAttachedShaders(ProgId, 5, &n, shdrs);
-  for (i = 0; i < n; i++)
-    if (glIsShader(shdrs[i]))
-    {
-      glDetachShader(ProgId, shdrs[i]);
-      glDeleteShader(shdrs[i]);
-    }
-
-  glDeleteProgram(ProgId);
-} /* End of 'AM6_RndResInit' function */
-
-
+ 
+ 
 /* Shaders initialization function.
  * ARGUMENTS: None.
  * RETURNS: None.
  */
 VOID AM6_RndShdInit( VOID )
 {
-  AM6_RndShdAdd("default");
+  AM6_RndProgId = AM6_RndShdLoad("default");
 } /* End of 'AM6_RndResInit' function */
-
+ 
 /* Shaders deinitialization function.
  * ARGUMENTS: None.
  * RETURNS: None.
  */
 VOID AM6_RndShdClose( VOID )
 {
-  INT i;
-
-  for (i = 0; i < AM6_RndShadersSize; i++)
-    AM6_RndShdDelete(AM6_RndShaders[i].ProgId);
-
-  AM6_RndShadersSize = 0;
+  AM6_RndShdFree(AM6_RndProgId);
 } /* End of 'AM6_RndResInit' function */
-
+ 
 /* Update from file all load shaders function.
  * ARGUMENTS: None.
  * RETURNS: None.
  */
 VOID AM6_RndShdUpdate( VOID )
 {
-  INT i, t = clock();
+  INT t = clock();
   static INT old_time;
-
+ 
   if (t - old_time > 2 * CLOCKS_PER_SEC)
   {
-    for (i = 0; i < AM6_RndShadersSize; i++)
-    {
-      AM6_RndShdDelete(AM6_RndShaders[i].ProgId);
-      AM6_RndShaders[i].ProgId =
-        AM6_RndShdLoad(AM6_RndShaders[i].Name);
-    }
+    AM6_RndShdFree(AM6_RndProgId);
+    AM6_RndProgId = AM6_RndShdLoad("default");
     old_time = t;
   }
 } /* End of 'AM6_RndShdUpdate' function */
-
-/* Update from file all load shaders function.
- * ARGUMENTS: None.
- * RETURNS: None.
- */
-INT AM6_RndShdAdd( CHAR *ShaderFileNamePrefix )
-{
-  INT i;
-
-  if (AM6_RndShadersSize >= AM6_MAX_SHADERS)
-    return 0;
-
-  for (i = 0; i < AM6_RndShadersSize; i++)
-    if (strcmp(ShaderFileNamePrefix, AM6_RndShaders[i].Name) == 0)
-      return i;
-
-  strncpy(AM6_RndShaders[AM6_RndShadersSize].Name,
-    ShaderFileNamePrefix, AM6_STR_MAX - 1);
-
-  AM6_RndShaders[AM6_RndShadersSize].ProgId =
-    AM6_RndShdLoad(ShaderFileNamePrefix);
-
-  return AM6_RndShadersSize++;
-} /* End of 'AM6_RndShdAdd' function */
-
+ 
+//shader tables: Add/Init/Close/Update
+  
 /* END OF 'rndshd.c' FILE */

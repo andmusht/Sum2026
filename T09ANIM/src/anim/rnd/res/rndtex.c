@@ -1,7 +1,7 @@
 /**/
 #include <stdio.h>
 
-#include "anim/rnd/rnd.h"
+#include "../rnd.h"
 
 /* Textures stock */
 am6TEXTURE AM6_RndTextures[AM6_MAX_TEXTURES]; /* Array of textures */
@@ -20,16 +20,16 @@ INT AM6_RndTexturesSize;                      /* Textures array store size */
  * RETURNS:
  *   (INT) texture stock number (-1 if error is occured).
  */
-INT VG4_RndTexAddImg( CHAR *Name, INT W, INT H, INT C, VOID *Bits )
+INT AM6_RndTexAddImg( CHAR *Name, INT W, INT H, INT C, VOID *Bits )
 {
   INT mips;
 
-  if (VG4_RndTexturesSize >= VG4_MAX_TEXTURES)
+  if (AM6_RndTexturesSize >= AM6_MAX_TEXTURES)
     return -1;
 
   /* Setup OpenGL texture */
-  glGenTextures(1, &VG4_RndTextures[VG4_RndTexturesSize].TexId);
-  glBindTexture(GL_TEXTURE_2D, VG4_RndTextures[VG4_RndTexturesSize].TexId);
+  glGenTextures(1, &AM6_RndTextures[AM6_RndTexturesSize].TexId);
+  glBindTexture(GL_TEXTURE_2D, AM6_RndTextures[AM6_RndTexturesSize].TexId);
 
 
   mips = log(W > H ? W : H) / log(2);
@@ -51,8 +51,8 @@ INT VG4_RndTexAddImg( CHAR *Name, INT W, INT H, INT C, VOID *Bits )
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-  return VG4_RndTexturesSize++;
-} /* End of 'VG4_RndTexAddImg' function */
+  return AM6_RndTexturesSize++;
+} /* End of 'AM6_RndTexAddImg' function */
 
 /* Add texture from file to stock function.
  * ARGUMENTS:
@@ -61,7 +61,7 @@ INT VG4_RndTexAddImg( CHAR *Name, INT W, INT H, INT C, VOID *Bits )
  * RETURNS:
  *   (INT) texture stock number (-1 if error is occured).
  */
-INT VG4_RndTexAddFromFile( CHAR *FileName )
+INT AM6_RndTexAddFromFile( CHAR *FileName )
 {
   INT ret = -1;
   HBITMAP hBm;
@@ -73,7 +73,7 @@ INT VG4_RndTexAddFromFile( CHAR *FileName )
 
     GetObject(hBm, sizeof(BITMAP), &Bm);
     if (Bm.bmBitsPixel == 24 || Bm.bmBitsPixel == 32 || Bm.bmBitsPixel == 8)
-      ret = VG4_RndTexAddImg(FileName, Bm.bmWidth, Bm.bmHeight, Bm.bmBitsPixel >> 3, Bm.bmBits); 
+      ret = AM6_RndTexAddImg(FileName, Bm.bmWidth, Bm.bmHeight, Bm.bmBitsPixel >> 3, Bm.bmBits); 
     DeleteObject(hBm);
     return ret;
   }
@@ -100,13 +100,13 @@ INT VG4_RndTexAddFromFile( CHAR *FileName )
       if ((mem = malloc(w * h * components)) != NULL)
       {
         fread(mem, components, w * h, F);
-        ret = VG4_RndTexAddImg(FileName, w, h, components, mem); 
+        ret = AM6_RndTexAddImg(FileName, w, h, components, mem); 
         free(mem);
       }
     fclose(F);
   }
   return ret;
-} /* End of 'VG4_RndTexAddFromFile' function */
+} /* End of 'AM6_RndTexAddFromFile' function */
 
 INT AM6_RndTexAdd( CHAR *FileName )
 {

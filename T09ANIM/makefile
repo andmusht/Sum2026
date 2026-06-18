@@ -1,13 +1,8 @@
-# Кросс-компилятор MinGW-w64 для Windows (64-бит)
 CC = i686-w64-mingw32-gcc
 
-# Флаги компиляции:
-# -Isrc : базовый путь для ваших заголовков (def.h, anim.h и т.д.)
-# -DGLEW_STATIC : обязателен, так как в rnd.h, скорее всего, есть этот дефайн, 
-#                 и мы будем линковать статическую библиотеку libglew32.a
 CFLAGS = -Wall -Wextra -g -Isrc -I/usr/i686-w64-mingw32/include/GL -fgnu89-inline
 
-# Библиотеки Windows (порядок важен!): GLEW, OpenGL, GDI, User32, математика
+# Библиотеки Windows: GLEW, OpenGL, GDI, User32, математика
 LIBS = -lglew32 -lopengl32 -lgdi32 -luser32 -lm
 
 # Директории

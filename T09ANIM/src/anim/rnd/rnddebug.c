@@ -110,5 +110,4 @@ VOID APIENTRY glDebugOutput( UINT Source, UINT Type, UINT Id, UINT Severity,
 
   printf("\x1b[38;2;255;100;100m\x1b[38;2;255;150;130m%s\n"
     "\x1b[38;2;255;255;255m", Buf);
-  /* printf(Buf); */
 } /* End of 'glDebugOutput' function */

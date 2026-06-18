@@ -81,9 +81,23 @@ UINT AM6_RndMtlApply( INT MtlNo )
     glUniform1f(loc, mtl->Trans);
 
   /* Set textures */
-  /*for (i = 0; i < 8; i++)
+  for (i = 0; i < 8; i++)
   {
-  }*/
+    CHAR tname[] = "IsTexture0";
 
+    tname[9] = '0' + i;
+    if (mtl->Tex[i] != -1)
+    {
+      glActiveTexture(GL_TEXTURE0 + i);
+      glBindTexture(GL_TEXTURE_2D, AM6_RndTextures[mtl->Tex[i]].TexId);
+    }
+    if (loc = glGetUniformLocation(prg, tname) != -1)
+      glUniform1i(loc, mtl->Tex[i] != -1);
+  }
   return prg;
 }
+
+/*tagam6MATERIAL AM6_RndMtlGet( INT MtlNo )
+{
+  return &AM6_RndMaterials[MtlNo];
+}*/
