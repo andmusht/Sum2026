@@ -70,3 +70,47 @@ VOID AM6_AnimAddUnit( am6UNIT *Uni )
 VOID AM6_AnimExit( VOID )
 {
 }
+
+/* Flip window full screen mode function.
+ * ARGUMENTS: None
+ * RETURNS: None.
+ */
+/*VOID AM6_AnimFlipFullScreen( VOID )
+{
+  static BOOL IsFullScreen = FALSE;
+  static RECT SaveRect;
+ 
+  if (!IsFullScreen)
+  {
+    HMONITOR hmon;
+    MONITORINFO mi;
+    RECT rc;*/
+ 
+    /* Save old window size and position */
+    /*GetWindowRect(AM6_Anim.hWnd, &SaveRect);*/
+ 
+    /* Go to full screen mode */
+    /*rc = mi.rcMonitor;
+    AdjustWindowRect(&rc, GetWindowLong(AM6_Anim.hWnd, GWL_STYLE), FALSE);*/
+ 
+    /* Obtain nearest monitor */
+    /*hmon = MonitorFromWindow(AM6_Anim.hWnd, MONITOR_DEFAULTTONEAREST);
+    mi.cbSize = sizeof(mi);
+    GetMonitorInfo(hmon, &mi);*/
+ 
+    /* Expand window */
+    /*SetWindowPos(AM6_Anim.hWnd, HWND_TOP,
+      rc.left, rc.top,
+      rc.right - rc.left,
+      rc.bottom - rc.top,
+      SWP_NOOWNERZORDER);
+  }
+  else*/
+    /* Restore from full screen mode */
+    /*SetWindowPos(AM6_Anim.hWnd, HWND_TOP,
+      SaveRect.left, SaveRect.top,
+      SaveRect.right - SaveRect.left,
+      SaveRect.bottom - SaveRect.top,
+      SWP_NOOWNERZORDER);
+  IsFullScreen = !IsFullScreen;
+}*/

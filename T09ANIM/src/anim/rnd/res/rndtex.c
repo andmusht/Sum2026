@@ -114,10 +114,14 @@ INT AM6_RndTexAdd( CHAR *FileName )
 }
 VOID AM6_RndTexInit( VOID )
 {
-  return;
+   AM6_RndTexturesSize = 0;
 }
 
 VOID AM6_RndTexClose( VOID )
 {
-  return;
+  INT i;
+
+  for (i = 0; i < AM6_RndTexturesSize; i++)
+    glDeleteTextures(1, &AM6_RndTextures[i].TexId);
+  AM6_RndTexturesSize = 0;
 }

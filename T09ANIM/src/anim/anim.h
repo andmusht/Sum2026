@@ -1,3 +1,6 @@
+#ifndef __anim_h_
+#define __anim_h_
+
 #include "anim/rnd/rnd.h"
 
 typedef struct tagam6ANIM am6ANIM;
@@ -41,7 +44,7 @@ typedef struct tagam6ANIM
 
   BYTE Keys[256];
   BYTE KeysClick[256];
-
+                          
   INT Mx, My, Mz, Mdx, Mdy, Mdz;
 
   BYTE
@@ -75,3 +78,11 @@ VOID AM6_AnimInputResponse( VOID );
 
 VOID AM6_TimerInit( VOID );
 VOID AM6_TimerResponse();
+
+/* Flip window full screen mode function.
+ * ARGUMENTS: None;
+ * RETURNS: None.
+ */
+/*VOID AM6_AnimFlipFullScreen( VOID );*/
+
+#endif

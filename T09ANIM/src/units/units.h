@@ -12,3 +12,7 @@ am6UNIT * AM6_AnimUnitCreateBBalls( VOID );
 am6UNIT * AM6_AnimUnitCreateCow( VOID );
 
 am6UNIT * AM6_AnimUnitCreateControl( VOID );
+
+am6UNIT * AM6_AnimUnitCreateG3DM( VOID );
+
+am6UNIT * AM6_AnimUnitCreateTex( VOID );

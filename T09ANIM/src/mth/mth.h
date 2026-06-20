@@ -25,6 +25,8 @@
 /* Degrees to radians conversion */
 #define D2R(A) ((A) * (PI / 180.0))
 #define Degree2Radian(a) D2R(a)
+#define R2D(A) ((A) * (180.0 / PI))
+#define Radian2Degree(a) R2D(a)
 
 /* Unit matrix */
 #define UnitMatrix \
@@ -112,6 +114,11 @@ AM6_INLINE VEC VecSet1( FLT A )
 
   return v;
 } /* End of 'VecSet1' function */
+
+AM6_INLINE VEC VecSubNum( VEC V1, FLT A )
+{
+  return VecSet(V1.X - A, V1.Y - A, V1.Z - A);
+} /* End of 'VecSubNum' function */
 
 /* Add two vectors function.
  * ARGUMENTS:

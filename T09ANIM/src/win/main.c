@@ -38,17 +38,16 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInctance,
  
   hConWnd = GetConsoleWindow();
   /* MoveWindow(hConWnd, 2560 + 1920 / 2, 0, 1920 / 2, 1080, FALSE); */
-  SetWindowPos(hConWnd, HWND_TOP, 2560 + 1920 / 2, 0, 1920 / 2, 1000, 0);
+  SetWindowPos(hConWnd, HWND_TOP,1920 / 2, 0, 1920 / 2, 1000, 0);
 
   m = MatrView(VecSet(0, 0, 5), VecSet(0, 0, 0), VecSet(0, 1, 0));
-
 
   /* Windows Class Register */
   wc.style = CS_VREDRAW | CS_HREDRAW;
   wc.cbClsExtra = 0;
   wc.cbWndExtra = 0;
   wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
-  wc.hCursor = LoadCursor(NULL, IDI_QUESTION);
+  wc.hCursor = LoadCursor(NULL, IDC_CROSS);
   wc.hIcon = LoadIcon(NULL, IDI_SHIELD);
   wc.lpszMenuName = NULL;
   wc.lpszClassName = WND_CLASS_NAME;
@@ -62,14 +61,18 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInctance,
   }
 
   /* Create Windows */
-  hWnd = CreateWindow(WND_CLASS_NAME, "ANIM", WS_OVERLAPPEDWINDOW | WS_VISIBLE | WS_CLIPCHILDREN,
+  hWnd = CreateWindow(WND_CLASS_NAME, "ANIM", WS_OVERLAPPEDWINDOW | WS_VISIBLE,
     1500, 100, 500, 300, NULL, NULL, hInstance, NULL);
 
   srand(30);
+  
+  AM6_AnimAddUnit(AM6_AnimUnitCreateControl());
+  AM6_AnimAddUnit(AM6_AnimUnitCreateG3DM());
+  for (i = 0; i < 100; i++)
+    AM6_AnimAddUnit(AM6_AnimUnitCreateCow());
   /*for (i = 0; i < 10; i++)
     AM6_AnimAddUnit(AM6_AnimUnitCreateBBalls());*/
-  AM6_AnimAddUnit(AM6_AnimUnitCreateCow());
-  AM6_AnimAddUnit(AM6_AnimUnitCreateControl());
+
   /* Main Program Loop */
   while (TRUE)
     if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -144,11 +147,16 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
     AM6_Anim.IsActive = TRUE;
     return 0;
 
-
   case WM_DESTROY:
     AM6_AnimClose();
     PostQuitMessage(0);
     KillTimer(hWnd, 30);
+
+  /*case WM_GETMINMAXINFO:
+    minmax = (MINMAXINFO *)lParam;
+    minmax->ptMaxTrackSize.y = GetSystemMetrics(SM_CYMAXTRACK) +
+      GetSystemMetrics(SM_CYCAPTION) + GetSystemMetrics(SM_CYBORDER) * 2;
+    return 0;*/
   }
   return DefWindowProc(hWnd, Msg, wParam, lParam);
 } /* End of 'MyWindowFunc' func */

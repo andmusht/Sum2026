@@ -51,7 +51,7 @@ VOID AM6_RndMtlClose( VOID );
 am6MATERIAL AM6_RndMtlGetDef( VOID );
 INT AM6_RndMtlAdd( am6MATERIAL *Mtl );
 UINT AM6_RndMtlApply( INT MtlNo );
-//am6MATERIAL AM6_RndMtlGet( INT MtlNo );
+am6MATERIAL * AM6_RndMtlGet( INT MtlNo );
 
 /* Texture representation type */
 typedef struct tagam6TEXTURE
@@ -67,5 +67,6 @@ extern INT AM6_RndTexturesSize;                      /* Textures array store siz
 
 VOID AM6_RndTexInit( VOID );
 VOID AM6_RndTexClose( VOID );
+INT AM6_RndTexAddImg( CHAR *Name, INT W, INT H, INT C, VOID *Bits );
 
 #endif /* __rndres_h_ */

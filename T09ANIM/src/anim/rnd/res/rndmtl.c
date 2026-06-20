@@ -1,5 +1,5 @@
 #include "anim/anim.h"
-
+  
 /* Material stock */
 am6MATERIAL AM6_RndMaterials[AM6_MAX_MATERIALS]; /* Array of materials */
 INT AM6_RndMaterialsSize;                        /* Materials array */
@@ -54,7 +54,7 @@ UINT AM6_RndMtlApply( INT MtlNo )
 
   /* Set shader program Id */
   prg = mtl->ShdNo;
-  if (prg < 0 || prg >= AM6_RndShadersSize)
+  if (prg < 0 || prg >= (UINT)AM6_RndShadersSize)
     prg = 0;
   prg = AM6_RndShaders[prg].ProgId;
 
@@ -97,7 +97,9 @@ UINT AM6_RndMtlApply( INT MtlNo )
   return prg;
 }
 
-/*tagam6MATERIAL AM6_RndMtlGet( INT MtlNo )
+am6MATERIAL * AM6_RndMtlGet( INT MtlNo )
 {
+  if (MtlNo < 0 || MtlNo >= AM6_RndMaterialsSize)
+    MtlNo = 0;
   return &AM6_RndMaterials[MtlNo];
-}*/
+}

@@ -19,6 +19,11 @@ MATR
 VEC AM6_RndMatrRight;
 
 INT AM6_MouseWheel;
+VEC
+  AM6_RndCamLoc,
+  AM6_RndCamAt,
+  AM6_RndCamDir,
+  AM6_RndCamUp;
 
 INT AM6_RndShdAddonI[8];
 INT AM6_RndShdAddonF[8];

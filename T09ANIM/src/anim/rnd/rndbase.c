@@ -153,4 +153,8 @@ VOID AM6_RndCamSet( VEC Loc, VEC At, VEC Up )
   AM6_RndMatrView = MatrView(Loc, At, Up);
   AM6_RndMatrRight = MatrRight(Loc, At, Up);
   AM6_RndMatrVP = MatrMulMatr(AM6_RndMatrView, AM6_RndMatrProj);
+  AM6_RndCamAt = At;
+  AM6_RndCamLoc = Loc;
+  AM6_RndCamUp = Up;
+
 }

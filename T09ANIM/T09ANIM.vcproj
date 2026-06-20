@@ -290,6 +290,30 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\units\u_g3dm.c"
+					>
+				</File>
+				<File
+					RelativePath=".\src\units\u_helic.c"
+					>
+				</File>
+				<File
+					RelativePath=".\src\units\u_julia.c"
+					>
+				</File>
+				<File
+					RelativePath=".\src\units\u_land.c"
+					>
+				</File>
+				<File
+					RelativePath=".\src\units\u_sova.c"
+					>
+				</File>
+				<File
+					RelativePath=".\src\units\u_tex.c"
+					>
+				</File>
+				<File
 					RelativePath=".\src\units\units.h"
 					>
 				</File>
