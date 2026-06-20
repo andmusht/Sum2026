@@ -49,7 +49,7 @@ VOID AM6_RndMtlInit( VOID );
 VOID AM6_RndMtlClose( VOID );
 
 am6MATERIAL AM6_RndMtlGetDef( VOID );
-INT AM6_RndMtlAdd( am6MATERIAL *Mtl );
+INT AM6_RndMtl  Add( am6MATERIAL *Mtl );
 UINT AM6_RndMtlApply( INT MtlNo );
 am6MATERIAL * AM6_RndMtlGet( INT MtlNo );
 
