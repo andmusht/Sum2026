@@ -1,9 +1,14 @@
 CC = i686-w64-mingw32-gcc
 
-CFLAGS = -Wall -Wextra -g -Isrc -I/usr/i686-w64-mingw32/include/GL -fgnu89-inline
+CFLAGS = -std=gnu89 -fms-extensions -O2 -Wall \
+         -Wno-implicit-function-declaration \
+         -Wno-incompatible-pointer-types \
+         -Wno-int-conversion \
+         -Wno-unknown-pragmas \
+	 -Isrc -I/usr/i686-w64-mingw32/include/GL
 
 # Библиотеки Windows: GLEW, OpenGL, GDI, User32, математика
-LIBS = -lglew32 -lopengl32 -lgdi32 -luser32 -lm
+LIBS = -lglew32 -lopengl32 -lgdi32 -luser32 -lwinmm -lm
 
 # Директории
 SRC_DIR = src

@@ -159,7 +159,6 @@ BOOL AM6_RndPrimsLoad( am6PRIMS *Prs, CHAR *FileName )
   if (Sign != *(DWORD *)"G3DM")
   {
     free(mem);
-    fclose(F);
     return FALSE;
   }
   NumOfPrims = *(DWORD *)ptr;

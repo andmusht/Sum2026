@@ -12,11 +12,9 @@ typedef struct tagam6UNIT am6UNIT;
   VOID (*Response)( am6UNIT *Uni, am6ANIM *Ani );  \
   VOID (*Render)( am6UNIT *Uni, am6ANIM *Ani )
 
-#define AM6_MAX_UNITS 3000
+#define AM6_MAX_UNITS 300000
 
-extern am6UNIT * Units[AM6_MAX_UNITS];
 extern am6ANIM AM6_Anim;
-extern INT NumOfUnits;
 
 typedef struct tagam6UNIT
 {

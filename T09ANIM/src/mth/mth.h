@@ -40,11 +40,11 @@
 }
 
 #define VecAddVec3(A, B, C) VecAddVec(VecAddVec(A, B), C)
-#define VecAddVec4(A, B, C, D) VecAddVec((VecAddVec3(A, B, C), D)
+#define VecAddVec4(A, B, C, D) VecAddVec(VecAddVec3(A, B, C), D)
 
 #define MatrMulMatr3(A, B, C) MatrMulMatr(MatrMulMatr(A, B), C)
-#define MatrMulMatr4(A, B, C, D) MatrMulMatr((MatrMulMatr3(A, B, C), D)
-#define MatrMulMatr5(A, B, C, D, E) MatrMulMatr((MatrMulMatr4(A, B, C, D), E)
+#define MatrMulMatr4(A, B, C, D) MatrMulMatr(MatrMulMatr3(A, B, C), D)
+#define MatrMulMatr5(A, B, C, D, E) MatrMulMatr(MatrMulMatr4(A, B, C, D), E)
 
 /* Base float point types */
 typedef DOUBLE DBL;
@@ -209,7 +209,7 @@ AM6_INLINE FLT VecLen( VEC V )
 
   if (len == 1 || len == 0)
     return len;
-  return sqrt(len);
+  return sqrtf(len);
 } /* End of 'VecLen' function */
 
 /* Square of the vector lenght function.
@@ -239,7 +239,7 @@ AM6_INLINE VEC VecNormalize( VEC V )
 
   if (len == 1 || len == 0)
     return V;
-  return VecDivNum(V, sqrt(len));
+  return VecDivNum(V, sqrtf(len));
 } /* End of 'VecNormalize' function */
 
 /*  function.
@@ -650,7 +650,7 @@ AM6_INLINE MATR MatrView( VEC Loc, VEC At, VEC Up1 )
 AM6_INLINE VEC MatrRight( VEC Loc, VEC At, VEC Up1 )
 {
  VEC
-    Dir = VecNormalize(VecSubVec(Up1, Loc));
+    Dir = VecNormalize(VecSubVec(At, Loc));
 
   return VecNormalize(VecCrossVec(Dir, Up1));
 }

@@ -52,6 +52,7 @@ am6MATERIAL AM6_RndMtlGetDef( VOID )
 VOID AM6_RndMtlInit( VOID )
 {
   am6MATERIAL def = AM6_RndMtlGetDef();
+  INT i;
 
   AM6_RndMaterialsSize = 0;
   AM6_RndMtlAdd(&def);
