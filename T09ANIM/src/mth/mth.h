@@ -647,7 +647,7 @@ AM6_INLINE MATR MatrView( VEC Loc, VEC At, VEC Up1 )
   return m;
 } /* End of 'MatrView' function */
 
-AM6_INLINE VEC MatrRight( VEC Loc, VEC At, VEC Up1 )
+AM6_INLINE VEC CamRight( VEC Loc, VEC At, VEC Up1 )
 {
  VEC
     Dir = VecNormalize(VecSubVec(At, Loc));

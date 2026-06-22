@@ -16,7 +16,7 @@ MATR
     AM6_RndMatrProj,              /* Projection coordinate system matrix */
     AM6_RndMatrVP;                /* Stored (View * Proj) matrix */
 
-VEC AM6_RndMatrRight;
+VEC AM6_RndCamRight;
 
 INT AM6_MouseWheel;
 VEC

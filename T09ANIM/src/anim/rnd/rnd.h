@@ -35,7 +35,7 @@ extern VEC
           AM6_RndCamDir,
           AM6_RndCamUp;
 
-extern VEC AM6_RndMatrRight;
+extern VEC AM6_RndCamRight;
 
 extern INT AM6_MouseWheel;
 
@@ -61,14 +61,21 @@ typedef struct tagam6VERTEX
   VEC4 C;  /* Vertex color */
 } am6VERTEX;
 
+/* Grid topology representation type */
+typedef struct tagam6GRID
+{
+  INT W, H;
+  am6VERTEX *V;
+} am6GRID;
+
 /* Primitive type */
 typedef enum tagam6PRIM_TYPE
 {
   AM6_RND_PRIM_POINTS,   /* Array of points  – GL_POINTS */
   AM6_RND_PRIM_LINES,    /* Line segments (by 2 points) – GL_LINES */
   AM6_RND_PRIM_TRIMESH,  /* Triangle mesh - array of triangles – GL_TRIANGLES */
+  AM6_RND_PRIM_TRISTRIP,
 } am6PRIM_TYPE;
-
 
 /* Primitive representation type */
 typedef struct tagam6PRIM
@@ -162,6 +169,56 @@ BOOL AM6_RndPrimCreateSphere( am6PRIM *Pr, DBL R, INT W, INT H );
  *       INT NumOfI;
  */
 VOID AM6_RndPrimTriMeshAutoNormals( am6VERTEX *V, INT NumOfV, INT *Ind, INT NumOfI );
+
+/* Create grid function.
+ * ARGUMENTS:
+ *   - grid data:
+ *       am6GRID *G;
+ *   - grid size:
+ *       INT W, H;
+ * RETURNS:
+ *   (BOOL) TRUE if success, FALSE otherwise.
+ */
+BOOL AM6_RndGridCreate( am6GRID *G, INT W, INT H );
+
+/* Free grid function.
+ * ARGUMENTS:
+ *   - grid data:
+ *       am6GRID *G;
+ * RETURNS: None.
+ */
+VOID AM6_RndGridFree( am6GRID *G );
+
+/* Create primitive from grid function.
+ * ARGUMENTS:
+ *   - primitive to be create:
+ *       am6PRIM *Pr;
+ *   - grid data:
+ *       am6GRID *G;
+ *   (BOOL) TRUE if success, FALSE otherwise.
+ */
+BOOL AM6_RndPrimFromGrid( am6PRIM *Pr, am6GRID *G );
+
+/* Build grid normals function.
+ * ARGUMENTS:
+ *   - grid data:
+ *       am6GRID *G;
+ * RETURNS: None.
+ */
+VOID AM6_RndGridAutoNormals( am6GRID *G );
+
+/* Create sphere grid function.
+ * ARGUMENTS:
+ *   - grid data:
+ *       am6GRID *G;
+ *   - sphere radius:
+ *       FLT R;
+ *   - grid size:
+ *       INT W, H;
+ * RETURNS:
+ *   (BOOL) TRUE if success, FALSE otherwise.
+ */
+BOOL AM6_RndGridCreateSphere( am6GRID *G, FLT R, INT W, INT H );
 
 /* Debug output function.
  * ARGUMENTS:

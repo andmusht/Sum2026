@@ -15,4 +15,8 @@ am6UNIT * AM6_AnimUnitCreateControl( VOID );
 
 am6UNIT * AM6_AnimUnitCreateG3DM( VOID );
 
-am6UNIT * AM6_AnimUnitCreateTex( VOID );
+am6UNIT * AM6_AnimUnitCreateTexture( VOID );
+
+am6UNIT * AM6_AnimUnitCreateHelic( VOID );
+
+am6UNIT * AM6_UnitCreateLand( VOID );

@@ -15,7 +15,7 @@ VOID AM6_AnimInit( HWND hWnd )
   AM6_Anim.W = AM6_RndFrameW;
 
   AM6_TimerInit();
-  /*AM6_AnimInputInit();*/
+  AM6_AnimInputInit();
 }
 
 VOID AM6_AnimClose( VOID )
@@ -50,7 +50,7 @@ VOID AM6_AnimRender( VOID )
   INT i;
 
   AM6_TimerResponse();
-  /*AM6_AnimInputResponse();*/
+  AM6_AnimInputResponse();
 
   for (i = 0; i < AM6_Anim.NumOfUnits; i++)
     AM6_Anim.Units[i]->Response(AM6_Anim.Units[i], &AM6_Anim);

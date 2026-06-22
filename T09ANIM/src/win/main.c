@@ -38,7 +38,7 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInctance,
  
   hConWnd = GetConsoleWindow();
   /* MoveWindow(hConWnd, 2560 + 1920 / 2, 0, 1920 / 2, 1080, FALSE); */
-  SetWindowPos(hConWnd, HWND_TOP,1920 / 2, 0, 1920 / 2, 1000, 0);
+  //SetWindowPos(hConWnd, HWND_TOP,1920 / 2, 0, 1920 / 2, 1000, 0);
 
   m = MatrView(VecSet(0, 0, 5), VecSet(0, 0, 0), VecSet(0, 1, 0));
 
@@ -67,9 +67,11 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInctance,
   srand(30);
   
   AM6_AnimAddUnit(AM6_AnimUnitCreateControl());
-  AM6_AnimAddUnit(AM6_AnimUnitCreateG3DM());
-  for (i = 0; i < 100; i++)
-    AM6_AnimAddUnit(AM6_AnimUnitCreateCow());
+  //AM6_AnimAddUnit(AM6_AnimUnitCreateTexture());
+  AM6_AnimAddUnit(AM6_UnitCreateLand());
+  AM6_AnimAddUnit(AM6_AnimUnitCreateHelic());
+  /*for (i = 0; i < 10; i++)
+    AM6_AnimAddUnit(AM6_AnimUnitCreateCow());*/
   /*for (i = 0; i < 10; i++)
     AM6_AnimAddUnit(AM6_AnimUnitCreateBBalls());*/
 

@@ -248,7 +248,7 @@ VOID AM6_RndShdClose( VOID )
   INT i;
 
   for (i = 0; i < AM6_RndShadersSize; i++)
-    DT3_RndShdFree(Am6_RndShaders[i].ProgId);
+    AM6_RndShdFree(AM6_RndShaders[i].ProgId);
   AM6_RndShadersSize = 0;
 } /* End of 'AM6_RndResInit' function */
  
@@ -263,7 +263,7 @@ VOID AM6_RndShdUpdate( VOID )
  
   if (t - old_time > 2 * CLOCKS_PER_SEC)
   {
-    for (i = 0, i < AM6_RndShadersSize; i++)
+    for (i = 0; i < AM6_RndShadersSize; i++)
     {
       AM6_RndShdFree(AM6_RndShaders[i].ProgId);
       AM6_RndShaders[i].ProgId = AM6_RndShdLoad(AM6_RndShaders[i].Name);

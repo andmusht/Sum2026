@@ -80,6 +80,9 @@ VOID AM6_RndInit( HWND hWnd )
 
   /* Render parameters setup */
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
   wglSwapIntervalEXT(0);
   AM6_RndProjSize = 0.1;
   AM6_RndProjDist = AM6_RndProjSize;
@@ -88,7 +91,8 @@ VOID AM6_RndInit( HWND hWnd )
   AM6_RndFrameH = 47;
   AM6_RndCamSet(VecSet(5, 5, 5), VecSet(0, 0, 0), VecSet(0, 1, 0)); 
 
-  glEnable(GL_BLEND);
+  glEnable(GL_PRIMITIVE_RESTART);
+  glPrimitiveRestartIndex(-1);
 
   AM6_RndResInit();
 }
@@ -151,8 +155,11 @@ VOID AM6_RndProjSet( VOID )
 VOID AM6_RndCamSet( VEC Loc, VEC At, VEC Up )
 {
   AM6_RndMatrView = MatrView(Loc, At, Up);
-  AM6_RndMatrRight = MatrRight(Loc, At, Up);
+  AM6_RndCamRight = CamRight(Loc, At, Up);
   AM6_RndMatrVP = MatrMulMatr(AM6_RndMatrView, AM6_RndMatrProj);
+  AM6_RndCamDir = VecSet(-AM6_RndMatrView.A[0][2],
+                         -AM6_RndMatrView.A[1][2],
+                         -AM6_RndMatrView.A[2][2]);
   AM6_RndCamAt = At;
   AM6_RndCamLoc = Loc;
   AM6_RndCamUp = Up;

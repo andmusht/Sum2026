@@ -140,12 +140,12 @@ VOID AM6_RndPrimDraw( am6PRIM *Pr, MATR World )
     name[6] = '0' + i;
     if ((loc = glGetUniformLocation(ProgId, name)) != -1)
       glUniform1iv(loc, 1, &AM6_RndShdAddonI[i]);
-    name[5] = 'F';
+    /*name[5] = 'F';
     if ((loc = glGetUniformLocation(ProgId, name)) != -1)
       glUniform1fv(loc, 1, &AM6_RndShdAddonF[i]);
     name[5] = 'V';
     if ((loc = glGetUniformLocation(ProgId, name)) != -1)
-      glUniform3fv(loc, 1, &AM6_RndShdAddonV[i].X);
+      glUniform3fv(loc, 1, &AM6_RndShdAddonV[i].X);*/
   }
 
   glBindVertexArray(Pr->VA);
@@ -230,12 +230,12 @@ BOOL AM6_RndPrimCreateSphere( am6PRIM *Pr, DBL R, INT W, INT H )
  */
 BOOL AM6_RndPrimLoad( am6PRIM *Pr, CHAR *FileName )
 {
-  INT size;
+  INT size, i;
   FILE *F;
   INT nv = 0, nf = 0;
   am6VERTEX *V;
   INT *Ind;
-  static CHAR Buf[3000];
+  static CHAR Buf[30000];
 
   memset(Pr, 0, sizeof(am6PRIM));
 
@@ -329,13 +329,11 @@ BOOL AM6_RndPrimLoad( am6PRIM *Pr, CHAR *FileName )
 
   AM6_RndPrimTriMeshAutoNormals(V, nv, Ind, nf);
 
-  for (i = 0; i < nv; i++)
+  for (i = 0; i < nv; i++)   
   {
-    FLT nl = VecDotVec(V[i].N, L);
-
-    if (nl < 0.1)
-      nl = 0.1;
-    V[i].C = Vec4Set(0.9 * nl, 0 * nl, 0.9 * nl, 1);
+    V[i].C = Vec4Set(0.8, 0.47, 0.30, 1);
+    V[i].T.X = (V[i].P.X + 1.0) * 0.5;  
+    V[i].T.Y = (V[i].P.Z + 1.0) * 0.5;  
   }
 
   AM6_RndPrimCreate(Pr, AM6_RND_PRIM_TRIMESH, V, nv, Ind, nf);

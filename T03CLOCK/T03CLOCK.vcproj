@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="T03CLOCK"
-	ProjectGUID="{50157653-8DBB-4522-BDBD-8935AFDCABF5}"
+	ProjectGUID="{30311EEB-5570-4964-9245-EDDEBD1612D0}"
 	RootNamespace="T03CLOCK"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"

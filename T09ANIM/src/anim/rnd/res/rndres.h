@@ -25,6 +25,7 @@ VOID AM6_RndShdInit( VOID );
 VOID AM6_RndShdClose( VOID );
 
 VOID AM6_RndShdUpdate( VOID );
+
 INT AM6_RndShdAdd( CHAR *ShaderFileNamePrefix );
 
 typedef struct tagam6MATERIAL
@@ -68,5 +69,49 @@ extern INT AM6_RndTexturesSize;                      /* Textures array store siz
 VOID AM6_RndTexInit( VOID );
 VOID AM6_RndTexClose( VOID );
 INT AM6_RndTexAddImg( CHAR *Name, INT W, INT H, INT C, VOID *Bits );
+
+/***
+ * Fonts handle
+***/
+
+/* Font description structure */
+typedef struct tagam6FONT
+{
+  DWORD LineH, BaseH;
+  FLT AdvanceX[256];
+} am6FONT;
+
+/* Load font from .G3DF file function.
+ * ARGUMENTS:
+ *   - font file name:
+ *       CHAR *FileName;
+ * RETURNS:
+ *   (BOOL) TRUE if success, FALSE otherwise.
+ */
+BOOL AM6_RndFntLoad( CHAR *FileName );
+
+/* Init font subsystem function.
+ * ARGUMENTS: None.
+ * RETURNS: None.
+ */
+VOID AM6_RndFntInit( VOID );
+
+/* Deinit font subsystem function.
+ * ARGUMENTS: None.
+ * RETURNS: None.
+ */
+VOID AM6_RndFntClose( VOID );
+
+/* Draw screen space string function.
+ * ARGUMENTS:
+ *   - string to draw:
+ *       CHAR *Str;
+ *   - draw position:
+ *       VEC Pos;
+ *   - font size:
+ *      FLT Size;
+ * RETURNS: None.
+ */
+VOID AM6_RndFntDraw( CHAR *Str, VEC Pos, FLT Size );
 
 #endif /* __rndres_h_ */

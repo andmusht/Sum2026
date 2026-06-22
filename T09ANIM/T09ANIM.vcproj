@@ -225,6 +225,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\anim\rnd\rndgrid.c"
+						>
+					</File>
+					<File
 						RelativePath=".\src\anim\rnd\rndprim.c"
 						>
 					</File>
@@ -261,6 +265,10 @@
 						</File>
 						<File
 							RelativePath=".\src\anim\rnd\res\rndtex.c"
+							>
+						</File>
+						<File
+							RelativePath=".\src\anim\rnd\rnfnt.c"
 							>
 						</File>
 					</Filter>

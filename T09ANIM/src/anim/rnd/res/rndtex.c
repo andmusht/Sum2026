@@ -5,7 +5,7 @@
 
 /* Textures stock */
 am6TEXTURE AM6_RndTextures[AM6_MAX_TEXTURES]; /* Array of textures */
-INT AM6_RndTexturesSize;                      /* Textures array store size */
+INT AM6_RndTexturesSize;                        /* Textures array store size */
 
 /* Add texture to stock function.
  * ARGUMENTS:
