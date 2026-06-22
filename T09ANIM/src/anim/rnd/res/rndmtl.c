@@ -1,5 +1,5 @@
 #include "anim/anim.h"
-  
+
 /* Material stock */
 am6MATERIAL AM6_RndMaterials[AM6_MAX_MATERIALS]; /* Array of materials */
 INT AM6_RndMaterialsSize;                        /* Materials array */
@@ -126,14 +126,19 @@ UINT AM6_RndMtlApply( INT MtlNo )
     CHAR tname[] = "IsTexture0";
 
     tname[9] = '0' + i;
+    glActiveTexture(GL_TEXTURE0 + i);
     if (mtl->Tex[i] != -1)
-    {
-      glActiveTexture(GL_TEXTURE0 + i);
       glBindTexture(GL_TEXTURE_2D, AM6_RndTextures[mtl->Tex[i]].TexId);
-    }
+    else
+      glBindTexture(GL_TEXTURE_2D, 0);
     if (loc = glGetUniformLocation(prg, tname) != -1)
       glUniform1i(loc, mtl->Tex[i] != -1);
+    if ((loc = glGetUniformLocation(prg, "Addon0")) != -1)
+      glUniform1i(loc, AM6_RndShdAddonI[0]);
+    if ((loc = glGetUniformLocation(prg, "Addon1")) != -1)
+      glUniform1i(loc, AM6_RndShdAddonI[1]);
   }
+
   return prg;
 }
 

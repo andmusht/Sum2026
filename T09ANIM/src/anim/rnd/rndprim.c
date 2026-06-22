@@ -110,7 +110,7 @@ VOID AM6_RndPrimDraw( am6PRIM *Pr, MATR World )
     winv = MatrTranspose(MatrInverse(w)),
     wvp = MatrMulMatr(w, AM6_RndMatrVP);
   INT
-    loc,
+    loc, i,
     prim_type =
       Pr->Type == AM6_RND_PRIM_LINES ? GL_LINES :
       Pr->Type == AM6_RND_PRIM_TRIMESH ? GL_TRIANGLES :
@@ -132,6 +132,21 @@ VOID AM6_RndPrimDraw( am6PRIM *Pr, MATR World )
     glUniformMatrix4fv(loc, 1, FALSE, winv.A[0]);
   if ((loc = glGetUniformLocation(ProgId, "CamLoc")) != -1)
     glUniform3fv(loc, 1, &AM6_RndCamLoc.X);
+
+  for (i = 0; i < 8; i++)
+  {
+    CHAR name[] = "AddonI0";
+
+    name[6] = '0' + i;
+    if ((loc = glGetUniformLocation(ProgId, name)) != -1)
+      glUniform1iv(loc, 1, &AM6_RndShdAddonI[i]);
+    name[5] = 'F';
+    if ((loc = glGetUniformLocation(ProgId, name)) != -1)
+      glUniform1fv(loc, 1, &AM6_RndShdAddonF[i]);
+    name[5] = 'V';
+    if ((loc = glGetUniformLocation(ProgId, name)) != -1)
+      glUniform3fv(loc, 1, &AM6_RndShdAddonV[i].X);
+  }
 
   glBindVertexArray(Pr->VA);
   if (Pr->IBuf == 0)
@@ -313,6 +328,16 @@ BOOL AM6_RndPrimLoad( am6PRIM *Pr, CHAR *FileName )
   fclose(F);
 
   AM6_RndPrimTriMeshAutoNormals(V, nv, Ind, nf);
+
+  for (i = 0; i < nv; i++)
+  {
+    FLT nl = VecDotVec(V[i].N, L);
+
+    if (nl < 0.1)
+      nl = 0.1;
+    V[i].C = Vec4Set(0.9 * nl, 0 * nl, 0.9 * nl, 1);
+  }
+
   AM6_RndPrimCreate(Pr, AM6_RND_PRIM_TRIMESH, V, nv, Ind, nf);
   free(V);
   return TRUE;
