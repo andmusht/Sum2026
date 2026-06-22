@@ -123,5 +123,6 @@ VOID AM6_RndTexClose( VOID )
 
   for (i = 0; i < AM6_RndTexturesSize; i++)
     glDeleteTextures(1, &AM6_RndTextures[i].TexId);
+  memset(AM6_RndTextures, 0, sizeof(am6TEXTURE) * AM6_RndTexturesSize);
   AM6_RndTexturesSize = 0;
 }

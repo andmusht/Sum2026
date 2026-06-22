@@ -208,7 +208,27 @@ static VOID AM6_RndShdFree( UINT ProgId )
     }
   glDeleteProgram(ProgId);
 } /* End of 'AM6_RndShdFree' function */
- 
+
+/* Add shader to stock from file function.
+ * ARGUMENTS:
+ *   - shader file path to load:
+ *       CHAR *ShaderFileNamePrefix;
+ * RETURNS:
+ *   (INT) new shader stock number.
+ */
+INT AM6_RndShdAdd( CHAR *ShaderFileNamePrefix )
+{
+  INT i;
+
+  for (i = 0; i < AM6_RndShadersSize; i++)
+    if (strcmp(ShaderFileNamePrefix, AM6_RndShaders[i].Name) == 0)
+      return i;
+  if (AM6_RndShadersSize >= AM6_MAX_SHADERS)
+    return 0;
+  strncpy(AM6_RndShaders[AM6_RndShadersSize].Name, ShaderFileNamePrefix, AM6_STR_MAX - 1);
+  AM6_RndShaders[AM6_RndShadersSize].ProgId = AM6_RndShdLoad(ShaderFileNamePrefix);
+  return AM6_RndShadersSize++;
+} /* End of 'DT3_RndShdAdd' function */
  
 /* Shaders initialization function.
  * ARGUMENTS: None.
@@ -216,7 +236,7 @@ static VOID AM6_RndShdFree( UINT ProgId )
  */
 VOID AM6_RndShdInit( VOID )
 {
-  AM6_RndProgId = AM6_RndShdLoad("default");
+  AM6_RndShdAdd("default");
 } /* End of 'AM6_RndResInit' function */
  
 /* Shaders deinitialization function.
@@ -225,7 +245,11 @@ VOID AM6_RndShdInit( VOID )
  */
 VOID AM6_RndShdClose( VOID )
 {
-  AM6_RndShdFree(AM6_RndProgId);
+  INT i;
+
+  for (i = 0; i < AM6_RndShadersSize; i++)
+    DT3_RndShdFree(Am6_RndShaders[i].ProgId);
+  AM6_RndShadersSize = 0;
 } /* End of 'AM6_RndResInit' function */
  
 /* Update from file all load shaders function.
@@ -234,13 +258,16 @@ VOID AM6_RndShdClose( VOID )
  */
 VOID AM6_RndShdUpdate( VOID )
 {
-  INT t = clock();
+  INT t = clock(), i;
   static INT old_time;
  
   if (t - old_time > 2 * CLOCKS_PER_SEC)
   {
-    AM6_RndShdFree(AM6_RndProgId);
-    AM6_RndProgId = AM6_RndShdLoad("default");
+    for (i = 0, i < AM6_RndShadersSize; i++)
+    {
+      AM6_RndShdFree(AM6_RndShaders[i].ProgId);
+      AM6_RndShaders[i].ProgId = AM6_RndShdLoad(AM6_RndShaders[i].Name);
+    }
     old_time = t;
   }
 } /* End of 'AM6_RndShdUpdate' function */
