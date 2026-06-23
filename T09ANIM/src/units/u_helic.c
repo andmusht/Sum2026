@@ -82,10 +82,6 @@ static VOID AM6_UnitResponse( am6UNIT_G3DM *Uni, am6ANIM *Ani )
     SetConsoleCursorPosition(hCon, Pos);
   }
   
-  sprintf(buf, "FPS: %.3f  Dist: %.2f", Ani->FPS, 
-      VecLen(VecSubVec(AM6_RndCamAt, AM6_RndCamLoc)));
-  AM6_RndFntDraw(buf, VecSet1(10), 10);
-
   /* Pause toggle */
   if (Ani->KeysClick['P'])
     Ani->IsPause = !Ani->IsPause;
@@ -115,13 +111,13 @@ static VOID AM6_UnitResponse( am6UNIT_G3DM *Uni, am6ANIM *Ani )
     Uni->AngX += Ani->Mdy * 0.3;
     Uni->AngY += Ani->Mdx * 0.3;
 
-    Uni->VelY = Ani->Mdy * 0.5;
-    Uni->VelX = Ani->Mdx * 0.5;
+    Uni->VelY = Ani->Mdx * 0.5;
+    Uni->VelX = Ani->Mdy * 0.5;
   }
   else
   {
-    Uni->AngX += Uni->VelX;
-    Uni->AngY += Uni->VelY;
+    Uni->AngX += Uni->VelY;
+    Uni->AngY += Uni->VelX;
 
     Uni->VelX *= 0.05;
     Uni->VelY *= 0.05;
@@ -132,7 +128,7 @@ static VOID AM6_UnitResponse( am6UNIT_G3DM *Uni, am6ANIM *Ani )
   if (Uni->AngX < -89.0)
     Uni->AngX = -89.0;
 
-  Uni->Dist -= Ani->Mdz * 0.5;
+  Uni->Dist -= Ani->Mdz * 0.05;
   if (Uni->Dist < 1.0)
     Uni->Dist = 1.0;
 
@@ -159,6 +155,7 @@ static VOID AM6_UnitResponse( am6UNIT_G3DM *Uni, am6ANIM *Ani )
 
   AM6_RndCamSet(camPos, Uni->Center, VecSet(0, 1, 0));
 
+  //Uni->Model.Trans = MatrMulMatr3(MatrRotateX(-90 - Uni->AngX), MatrRotateY(Uni->AngY), MatrTranslate(Uni->Center));
   Uni->Model.Trans = MatrMulMatr(MatrRotateX(-90), MatrTranslate(Uni->Center));
 } /* End of 'AM6_UnitResponse' function */
 
@@ -172,6 +169,10 @@ static VOID AM6_UnitResponse( am6UNIT_G3DM *Uni, am6ANIM *Ani )
  */
 static VOID AM6_UnitRender( am6UNIT_G3DM *Uni, am6ANIM *Ani )
 {
+  CHAR buf[102];
+
+  sprintf(buf, "FPS: %.3f  Dist: %.2f", Ani->FPS, VecLen(VecSubVec(AM6_RndCamAt, AM6_RndCamLoc)));
+  AM6_RndFntDraw(buf, VecSet1(10), 10);
   AM6_RndPrimsDraw(&Uni->Model, MatrIdentity());
 } /* End of 'AM6_UnitRender' function */
 

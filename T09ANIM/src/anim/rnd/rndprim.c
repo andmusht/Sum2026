@@ -190,7 +190,7 @@ BOOL AM6_RndPrimCreateSphere( am6PRIM *Pr, DBL R, INT W, INT H )
 
   Ind = (INT *)(V + W * H);
 
-  AM6_RndPrimCreate(Pr, AM6_RND_PRIM_TRIMESH, V, W * H, Ind, (H - 1) * (W - 1) * 2 * 3);
+  //AM6_RndPrimCreate(Pr, AM6_RND_PRIM_TRIMESH, V, W * H, Ind, (H - 1) * (W - 1) * 2 * 3);
 
   /* Fill vertex array */
   for (k = 0, i = 0, theta = 0; i < H; i++, theta += PI / (H - 1))

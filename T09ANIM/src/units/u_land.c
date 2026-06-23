@@ -23,6 +23,7 @@ static VOID AM6_UnitInit( am6UNIT_LAND *Uni, am6ANIM *Ani )
   HBITMAP hBm;
   BITMAP bm;
 
+  Uni->Pos = VecSet(0, -64, 0);
   if ((hBm = LoadImage(NULL, "bin/heights/hfcolor1.bmp", IMAGE_BITMAP, 0, 0,
                        LR_LOADFROMFILE | LR_CREATEDIBSECTION)) != NULL)
   {
@@ -78,7 +79,7 @@ static VOID AM6_UnitResponse( am6UNIT_LAND *Uni, am6ANIM *Ani )
  */
 static VOID AM6_UnitRender( am6UNIT_LAND *Uni, am6ANIM *Ani )
 {
-  AM6_RndPrimDraw(&Uni->Land, MatrIdentity());
+  AM6_RndPrimDraw(&Uni->Land, MatrTranslate(Uni->Pos));
 } /* End of 'AM6_UnitClose' function */
 
 static VOID AM6_UnitClose( am6UNIT_LAND *Uni, am6ANIM *Ani )

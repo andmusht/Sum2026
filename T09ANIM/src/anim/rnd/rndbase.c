@@ -89,7 +89,7 @@ VOID AM6_RndInit( HWND hWnd )
   AM6_RndProjFarClip = 30000;
   AM6_RndFrameW = 47;
   AM6_RndFrameH = 47;
-  AM6_RndCamSet(VecSet(5, -5, 5), VecSet(-4, 50, 8), VecSet(0, 1, 0)); 
+  AM6_RndCamSet(VecSet(17, 17, 17), VecSet(1, -2, 8), VecSet(0, 1, 0));
 
   glEnable(GL_PRIMITIVE_RESTART);
   glPrimitiveRestartIndex(-1);

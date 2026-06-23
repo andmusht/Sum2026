@@ -31,7 +31,7 @@ static VOID AM6_UnitResponse( am6UNIT_CONTROL *Uni, am6ANIM *Ani )
   CHAR buf[102];
 
   if (Ani->Keys['0'])
-      AM6_RndCamSet(VecSet(5, -5, 5), VecSet(-1, 20, -8), VecSet(0, 1, 0));  
+      AM6_RndCamSet(VecSet(17, 17, 17), VecSet(1, -2, 8), VecSet(0, 1, 0));  
   if (Ani->Keys['F'] == 1 && Ani->KeysClick['F'] == 1)
     FlipFullScreen(Ani->hWnd);
   /* Clear console on F8 */
@@ -158,7 +158,12 @@ static VOID AM6_UnitResponse( am6UNIT_CONTROL *Uni, am6ANIM *Ani )
 }
  
 static VOID AM6_UnitRender( am6UNIT_CONTROL *Uni, am6ANIM *Ani )
-{}
+{
+  CHAR buf[102];
+
+  sprintf(buf, "FPS: %.3f  Dist: %.2f", Ani->FPS, VecLen(VecSubVec(AM6_RndCamAt, AM6_RndCamLoc)));
+  AM6_RndFntDraw(buf, VecSet1(10), 10);
+}
  
 am6UNIT * AM6_AnimUnitCreateControl( VOID )
 {

@@ -20,7 +20,7 @@ typedef struct tagam6UNIT_G3DM
 static VOID AM6_UnitInit( am6UNIT_G3DM *Uni, am6ANIM *Ani )
 {
   AM6_RndPrimsLoad(&Uni->Model, "bin/models/x6.g3dm");
-  //Uni->Model.Trans = MatrRotateX(-90);
+  Uni->Model.Trans = MatrRotateX(-90);
 } /* End of 'AM6_UnitInit' function */
 
 /* Unit deinitialization function.

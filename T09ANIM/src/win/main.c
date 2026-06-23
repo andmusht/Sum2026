@@ -67,12 +67,13 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInctance,
 
   srand(30);
   
-  //AM6_AnimAddUnit(AM6_AnimUnitCreateControl());
+  /*AM6_AnimAddUnit(AM6_AnimUnitCreateControl());*/
   AM6_AnimAddUnit(AM6_AnimUnitCreateLand());
+  /*AM6_AnimAddUnit(AM6_AnimUnitCreateG3DM());*/
   AM6_AnimAddUnit(AM6_AnimUnitCreateHelic());
   /*for (i = 0; i < 10; i++)
-    AM6_AnimAddUnit(AM6_AnimUnitCreateCow());*/
-  /*for (i = 0; i < 10; i++)
+    AM6_AnimAddUnit(AM6_AnimUnitCreateCow());
+  for (i = 0; i < 10; i++)
     AM6_AnimAddUnit(AM6_AnimUnitCreateBBalls());*/
 
   /* Main Program Loop */
