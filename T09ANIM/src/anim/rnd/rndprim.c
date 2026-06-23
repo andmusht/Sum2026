@@ -114,6 +114,7 @@ VOID AM6_RndPrimDraw( am6PRIM *Pr, MATR World )
     prim_type =
       Pr->Type == AM6_RND_PRIM_LINES ? GL_LINES :
       Pr->Type == AM6_RND_PRIM_TRIMESH ? GL_TRIANGLES :
+      Pr->Type == AM6_RND_PRIM_TRISTRIP ? GL_TRIANGLE_STRIP :
       GL_POINTS;
   UINT ProgId;
   

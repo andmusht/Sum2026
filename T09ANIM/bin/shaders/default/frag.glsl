@@ -19,6 +19,9 @@ uniform float Ph;
 uniform bool IsTexture0;  
 layout(binding = 0) uniform sampler2D Tex;
 
+uniform int AddonI0;
+uniform int AddonI1;
+
 vec3 Shade( vec3 P, vec3 N, vec3 V, vec3 R, vec3 L, vec3 LColor, float F )
 {
   vec3 color = vec3(0);
@@ -40,11 +43,13 @@ vec3 Shade( vec3 P, vec3 N, vec3 V, vec3 R, vec3 L, vec3 LColor, float F )
 }
  
 void main( void )
-{                            
+{
+  if (AddonI1 > 10)//abs(sin(Time * 0.1) * AddonI0))
+    ;//discard;
   vec3 N = normalize(DrawNormal);
   vec3 L = normalize(vec3(0.4, 0.6, 1));
 
-  vec3 LPos = vec3(8 * sin(13 * Time), 10, 8 * cos(Time));
+  vec3 LPos = vec3(8 /** sin(13 * Time)*/, 10, 8/** cos(Time)*/);
   L = normalize(LPos - DrawPos);
   vec3 D = normalize(vec3(3, -1, -2) - LPos);
   float F = 1, a = radians(36.30), b = radians(27.0);

@@ -28,7 +28,12 @@ static VOID AM6_UnitResponse( am6UNIT_CONTROL *Uni, am6ANIM *Ani )
       Dist, plen, Azimuth, Elevator;
   VEC NewLoc, dv;
   INT mode[2];
+  CHAR buf[102];
 
+  if (Ani->Keys['0'])
+      AM6_RndCamSet(VecSet(5, -5, 5), VecSet(-1, 20, -8), VecSet(0, 1, 0));  
+  if (Ani->Keys['F'] == 1 && Ani->KeysClick['F'] == 1)
+    FlipFullScreen(Ani->hWnd);
   /* Clear console on F8 */
   if (Ani->KeysClick[VK_F8])
   {
@@ -45,6 +50,10 @@ static VOID AM6_UnitResponse( am6UNIT_CONTROL *Uni, am6ANIM *Ani )
     SetConsoleCursorPosition(hCon, info.dwCursorPosition);
     SetConsoleCursorPosition(hCon, Pos);
   }
+  
+  sprintf(buf, "FPS: %.3f  Dist: %.2f", Ani->FPS, 
+      VecLen(VecSubVec(AM6_RndCamAt, AM6_RndCamLoc)));
+  AM6_RndFntDraw(buf, VecSet1(10), 10);
 
   /* Pause toggle */
   if (Ani->KeysClick['P'])
@@ -143,20 +152,13 @@ static VOID AM6_UnitResponse( am6UNIT_CONTROL *Uni, am6ANIM *Ani )
     PointTransform(VecSet(0, Dist, 0),
                    MatrMulMatr3(MatrRotateX(Elevator),
                                 MatrRotateY(Azimuth),
-                                MatrTranslate(AM6_RndCamAt))),
-    AM6_RndCamAt,
-    VecSet(0, 1, 0)
-  );
+                                MatrTranslate(AM6_RndCamAt))), 
+    AM6_RndCamAt, 
+    VecSet(0, 1, 0));
 }
  
 static VOID AM6_UnitRender( am6UNIT_CONTROL *Uni, am6ANIM *Ani )
-{
-  CHAR buf[102];
-
-  sprintf(buf, "FPS: %.3f  Dist: %.2f", Ani->FPS, 
-      VecLen(VecSubVec(AM6_RndCamAt, AM6_RndCamLoc)));
-  AM6_RndFntDraw(buf, VecSet1(10), 10);
-}
+{}
  
 am6UNIT * AM6_AnimUnitCreateControl( VOID )
 {

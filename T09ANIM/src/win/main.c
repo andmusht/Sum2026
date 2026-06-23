@@ -13,7 +13,8 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInctance,
   MSG msg;
   HWND hWnd;
   MATR m;
-  INT i;  CONSOLE_FONT_INFOEX cfi = {0};
+  INT i;
+  CONSOLE_FONT_INFOEX cfi = {0};
   HWND hConWnd;
  
   SetDbgMemHooks();
@@ -66,9 +67,8 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInctance,
 
   srand(30);
   
-  AM6_AnimAddUnit(AM6_AnimUnitCreateControl());
-  //AM6_AnimAddUnit(AM6_AnimUnitCreateTexture());
-  AM6_AnimAddUnit(AM6_UnitCreateLand());
+  //AM6_AnimAddUnit(AM6_AnimUnitCreateControl());
+  AM6_AnimAddUnit(AM6_AnimUnitCreateLand());
   AM6_AnimAddUnit(AM6_AnimUnitCreateHelic());
   /*for (i = 0; i < 10; i++)
     AM6_AnimAddUnit(AM6_AnimUnitCreateCow());*/
@@ -98,7 +98,7 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
   switch (Msg)
   {
   case WM_CREATE:
-    SetTimer(hWnd, 50, 1, NULL);
+    SetTimer(hWnd, 30, 1, NULL);
     AM6_AnimInit(hWnd);
     return 0;
 

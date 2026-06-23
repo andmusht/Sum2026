@@ -23,8 +23,8 @@ VOID DrawSecHand( HDC hDc, HWND hWnd, INT M, INT L, INT H, INT W, DOUBLE Angle )
 
   for (i = 0; i < N; i++)
   {
-    pnt_res[i].x = W / 2 + (pnt[i].x * cosa + pnt[i].y * sina);
-    pnt_res[i].y = H / 2 + (pnt[i].x * sina - pnt[i].y * cosa);
+    pnt_res[i].x = W / 2 + (INT)(pnt[i].x * cosa + pnt[i].y * sina);
+    pnt_res[i].y = H / 2 + (INT)(pnt[i].x * sina - pnt[i].y * cosa);
   }
 
   Polygon(hDc, pnt_res, 4);
@@ -83,9 +83,8 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
   static BITMAP bm;
   static HBITMAP hBm, hBmClockface;
   static HFONT hFnt;
-
-    DOUBLE
-        angleMin, angleSec, angleHour;
+  DOUBLE
+      angleMin, angleSec, angleHour;
 
   switch (Msg)
   {
@@ -128,10 +127,11 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
     hDc = GetDC(hWnd);
     hMemDC = CreateCompatibleDC(hDc);
     hDCClockface = CreateCompatibleDC(hDc);
-    hBmClockface = LoadImage(NULL, "fish.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-
-    GetObject(hBmClockface, sizeof(BITMAP), &bm);
     ReleaseDC(hWnd, hDc);
+
+    hBmClockface = LoadImage(NULL, "fish.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+    GetObject(hBmClockface, sizeof(BITMAP), &bm);
+
     SetTimer(hWnd, 3, 8, NULL);
     break;
 

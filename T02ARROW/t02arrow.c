@@ -161,9 +161,9 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
     SelectObject(hMemDC, GetStockObject(WHITE_BRUSH));
 
     if (is_flag == 0)
-    for (i = 0; i < W; i += W / 30)
-      for (j = 0; j < H; j += H / 30)
-        DrawArrow(hWnd, hMemDC, i, j, 13, 11, 19);
+      for (i = 0; i < W; i += W / 30)
+        for (j = 0; j < H; j += H / 30)
+          DrawArrow(hWnd, hMemDC, i, j, 13, 11, 19);
 
     if (is_flag == 1)
       for (i = 1; i < W; i += W / 30)
@@ -181,7 +181,10 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
       for (i = 1; i < W; i += W / 30)
         for (j = 1; j < H; j += H / 30)
           DrawArrow(hWnd, hMemDC, rand() % i, rand() % j, 13, 11, 19);
-    
+
+    hDc = GetDC(hWnd);
+    BitBlt(hDc, 0, 0, W, H, hMemDC, 0, 0, SRCCOPY);          
+    ReleaseDC(hWnd, hDc);
     break;
 
   case WM_DESTROY:

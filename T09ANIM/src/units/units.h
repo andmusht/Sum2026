@@ -19,4 +19,4 @@ am6UNIT * AM6_AnimUnitCreateTexture( VOID );
 
 am6UNIT * AM6_AnimUnitCreateHelic( VOID );
 
-am6UNIT * AM6_UnitCreateLand( VOID );
+am6UNIT * AM6_AnimUnitCreateLand( VOID );

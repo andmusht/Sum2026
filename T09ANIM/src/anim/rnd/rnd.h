@@ -298,5 +298,12 @@ VOID AM6_RndPrimsDraw( am6PRIMS *Prs, MATR World );
  */
 BOOL AM6_RndPrimsLoad( am6PRIMS *Prs, CHAR *FileName );
 
+/* Flip window full screen mode function.
+ * ARGUMENTS:
+ *   - window handle:
+ *       HWND hWnd;
+ * RETURNS: None.
+ */   
+VOID FlipFullScreen( HWND hWnd );
 
 #endif /* __rnd_h_ */

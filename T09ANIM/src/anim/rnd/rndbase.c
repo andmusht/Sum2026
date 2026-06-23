@@ -86,10 +86,10 @@ VOID AM6_RndInit( HWND hWnd )
   wglSwapIntervalEXT(0);
   AM6_RndProjSize = 0.1;
   AM6_RndProjDist = AM6_RndProjSize;
-  AM6_RndProjFarClip = 3000;
+  AM6_RndProjFarClip = 30000;
   AM6_RndFrameW = 47;
   AM6_RndFrameH = 47;
-  AM6_RndCamSet(VecSet(5, 5, 5), VecSet(0, 0, 0), VecSet(0, 1, 0)); 
+  AM6_RndCamSet(VecSet(5, -5, 5), VecSet(-4, 50, 8), VecSet(0, 1, 0)); 
 
   glEnable(GL_PRIMITIVE_RESTART);
   glPrimitiveRestartIndex(-1);
@@ -125,7 +125,9 @@ VOID AM6_RndStart( VOID )
 {
   VEC4 ClearColor = {0.30, 0.47, 0.8, 1};
   FLT DepthClearValue = 1;
- 
+
+  AM6_RndShdUpdate();
+
   /* Clear frame */
   glClearBufferfv(GL_COLOR, 0, &ClearColor.X);
   glClearBufferfv(GL_DEPTH, 0, &DepthClearValue);
@@ -165,3 +167,52 @@ VOID AM6_RndCamSet( VEC Loc, VEC At, VEC Up )
   AM6_RndCamUp = Up;
 
 }
+
+
+/* Flip window full screen mode function.
+ * ARGUMENTS:
+ *   - window handle:
+ *       HWND hWnd;
+ * RETURNS: None.
+ */   
+VOID FlipFullScreen( HWND hWnd )
+{
+  static BOOL IsFullScreen = FALSE;
+  static RECT SaveRect;
+
+  if (!IsFullScreen)
+  {
+    HMONITOR hmon;
+    MONITORINFO mi;
+    RECT rc;
+
+    /* Save old window size and position */
+    GetWindowRect(hWnd, &SaveRect);
+
+    /* Obtain nearest monitor */
+    hmon = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
+    mi.cbSize = sizeof(mi);
+
+    GetMonitorInfo(hmon, &mi);
+
+    /* Go to full screen mode */
+    rc = mi.rcMonitor;
+    AdjustWindowRect(&rc, GetWindowLong(hWnd, GWL_STYLE), FALSE);
+
+
+    /* Expand window */
+    SetWindowPos(hWnd, HWND_TOP,
+      rc.left, rc.top,
+      rc.right - rc.left,
+      rc.bottom - rc.top,
+      SWP_NOOWNERZORDER);
+  }
+  else
+    /* Restore from full screen mode */
+    SetWindowPos(hWnd, HWND_TOP,
+      SaveRect.left, SaveRect.top,
+      SaveRect.right - SaveRect.left,
+      SaveRect.bottom - SaveRect.top,
+      SWP_NOOWNERZORDER);
+  IsFullScreen = !IsFullScreen;
+} /* End of 'FlipFullScreen' function */
